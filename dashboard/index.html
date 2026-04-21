@@ -3,157 +3,305 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Executive Sales Dashboard</title>
+<title>Smart Audit | Executive Sales Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f4f5f9;--surface:#ffffff;--surface2:#f8f9fc;--border:#e5e7ef;--border2:#c8cedd;
-  --text:#0f172a;--text2:#334155;--muted:#94a3b8;--muted2:#64748b;
-  --teal:#0ea5e9;--teal-s:rgba(14,165,233,.09);--teal-g:rgba(14,165,233,.16);
-  --purple:#7c3aed;--purple-s:rgba(124,58,237,.09);--pink:#ec4899;--pink-s:rgba(236,72,153,.09);
-  --green:#10b981;--green-s:rgba(16,185,129,.09);--amber:#f59e0b;--amber-s:rgba(245,158,11,.09);
-  --red:#ef4444;--red-s:rgba(239,68,68,.09);--blue:#3b82f6;
-  --g1:linear-gradient(135deg,#0ea5e9,#7c3aed);--g2:linear-gradient(135deg,#7c3aed,#ec4899);
-  --g3:linear-gradient(135deg,#10b981,#0ea5e9);
-  --sx:0 1px 3px rgba(15,23,42,.05),0 1px 2px rgba(15,23,42,.04);
-  --ss:0 2px 8px rgba(15,23,42,.06),0 1px 3px rgba(15,23,42,.04);
-  --sm:0 4px 20px rgba(15,23,42,.08),0 2px 6px rgba(15,23,42,.05);
-  --sl:0 10px 40px rgba(15,23,42,.10),0 4px 12px rgba(15,23,42,.06);
-  --r:14px;--rs:10px;
+  --bg:#f0f2f8;--surface:#ffffff;--surface2:#f6f7fb;--surface3:#eef0f7;
+  --border:#e2e5f0;--border2:#c8cde0;
+  --text:#0c1220;--text2:#2d3a52;--muted:#8894ad;--muted2:#5a6a84;
+  --teal:#0891b2;--teal-s:rgba(8,145,178,.08);--teal-g:rgba(8,145,178,.15);
+  --indigo:#4f46e5;--indigo-s:rgba(79,70,229,.08);
+  --violet:#7c3aed;--violet-s:rgba(124,58,237,.08);
+  --pink:#db2777;--pink-s:rgba(219,39,119,.08);
+  --green:#059669;--green-s:rgba(5,150,105,.08);
+  --amber:#d97706;--amber-s:rgba(217,119,6,.08);
+  --red:#dc2626;--red-s:rgba(220,38,38,.08);
+  --blue:#2563eb;
+  --g1:linear-gradient(135deg,#0891b2,#4f46e5);
+  --g2:linear-gradient(135deg,#4f46e5,#db2777);
+  --g3:linear-gradient(135deg,#059669,#0891b2);
+  --sx:0 1px 3px rgba(12,18,32,.06),0 1px 2px rgba(12,18,32,.04);
+  --ss:0 2px 10px rgba(12,18,32,.07),0 1px 4px rgba(12,18,32,.04);
+  --sm:0 6px 24px rgba(12,18,32,.09),0 2px 8px rgba(12,18,32,.05);
+  --sl:0 12px 44px rgba(12,18,32,.12),0 4px 14px rgba(12,18,32,.07);
+  --r:16px;--rs:10px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
-header{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 28px;height:66px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sx);gap:12px;}
-.hd-l{display:flex;align-items:center;gap:13px;min-width:0}
-.logo{width:38px;height:38px;background:var(--g1);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#fff;box-shadow:0 4px 14px rgba(14,165,233,.28);flex-shrink:0;}
-.hd-title{font-size:15px;font-weight:700;letter-spacing:-.4px;color:var(--text);white-space:nowrap}
-.hd-sub{font-size:11px;color:var(--muted2);margin-top:1.5px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:200;
+  background:rgba(255,255,255,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);padding:0 28px;height:68px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  box-shadow:0 1px 0 var(--border),var(--sx);
+}
+.hd-l{display:flex;align-items:center;gap:14px;min-width:0}
+.logo{
+  width:40px;height:40px;background:var(--g1);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:18px;font-weight:800;color:#fff;
+  box-shadow:0 4px 16px rgba(8,145,178,.30);flex-shrink:0;
+}
+.hd-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;letter-spacing:-.3px;color:var(--text);white-space:nowrap}
+.hd-sub{font-size:11px;color:var(--muted2);margin-top:2px;letter-spacing:.1px}
 .hd-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.pill{display:flex;align-items:center;gap:6px;border-radius:20px;padding:5px 12px;font-size:11.5px;font-weight:600;white-space:nowrap;border:1px solid;}
-.pill-green{background:var(--green-s);border-color:rgba(16,185,129,.22);color:var(--green)}
-.pill-teal{background:var(--teal-s);border-color:rgba(14,165,233,.20);color:var(--teal);max-width:190px;overflow:hidden;text-overflow:ellipsis;}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border-radius:8px;border:none;background:transparent;transition:background .2s;}
+.hamburger:hover{background:var(--surface2)}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text2);border-radius:2px;transition:all .28s cubic-bezier(.4,0,.2,1);}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile nav drawer */
+.mobile-nav{
+  display:none;position:fixed;top:68px;left:0;right:0;z-index:199;
+  background:rgba(255,255,255,.98);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);padding:16px 20px;
+  flex-direction:column;gap:10px;box-shadow:var(--sm);
+  transform:translateY(-8px);opacity:0;pointer-events:none;
+  transition:all .25s cubic-bezier(.4,0,.2,1);
+}
+.mobile-nav.open{transform:translateY(0);opacity:1;pointer-events:all;display:flex;}
+
+/* Pills & Buttons */
+.pill{display:flex;align-items:center;gap:6px;border-radius:20px;padding:5px 13px;font-size:11px;font-weight:600;white-space:nowrap;border:1px solid;letter-spacing:.2px;}
+.pill-green{background:var(--green-s);border-color:rgba(5,150,105,.22);color:var(--green)}
+.pill-teal{background:var(--teal-s);border-color:rgba(8,145,178,.22);color:var(--teal);max-width:200px;overflow:hidden;text-overflow:ellipsis;}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
-.btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:var(--rs);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:8px 16px;cursor:pointer;transition:all .2s;white-space:nowrap;letter-spacing:-.1px;}
-.btn-primary{background:var(--g1);color:#fff;box-shadow:0 4px 14px rgba(14,165,233,.26);}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(14,165,233,.38);filter:brightness(1.07)}
+
+.btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:9px 18px;cursor:pointer;transition:all .2s;white-space:nowrap;letter-spacing:-.1px;}
+.btn-primary{background:var(--g1);color:#fff;box-shadow:0 4px 16px rgba(8,145,178,.28);}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(8,145,178,.40);filter:brightness(1.06)}
 .btn-primary:active{transform:scale(.97)}
-.btn-pdf{background:#fff;color:var(--red);border:1.5px solid rgba(239,68,68,.3);box-shadow:var(--sx);}
-.btn-pdf:hover{background:var(--red-s);border-color:rgba(239,68,68,.45);box-shadow:var(--ss)}
+.btn-pdf{background:#fff;color:var(--red);border:1.5px solid rgba(220,38,38,.28);box-shadow:var(--sx);}
+.btn-pdf:hover{background:var(--red-s);border-color:rgba(220,38,38,.45);box-shadow:var(--ss)}
 .btn-pdf:active{transform:scale(.97)}
 .btn-pdf.loading{opacity:.65;cursor:not-allowed;pointer-events:none}
 #file-input{display:none}
-main{padding:24px 28px;max-width:1640px;margin:0 auto}
-.sec{font-size:10.5px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--muted2);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+
+/* ── MAIN ── */
+main{padding:26px 28px 0;max-width:1680px;margin:0 auto}
+.sec{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);margin-bottom:12px;display:flex;align-items:center;gap:12px;}
 .sec::after{content:'';flex:1;height:1px;background:var(--border)}
-.fbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:22px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sx);}
-.fl{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-right:2px;white-space:nowrap;}
-.fsel{appearance:none;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--rs);color:var(--text2);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;padding:7px 28px 7px 11px;cursor:pointer;transition:all .17s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%2394a3b8' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
+
+/* ── FILTER BAR ── */
+.fbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:24px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sx);}
+.fl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin-right:2px;white-space:nowrap;}
+.fsel{
+  appearance:none;background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--rs);color:var(--text2);font-family:'DM Sans',sans-serif;
+  font-size:12.5px;font-weight:500;padding:7px 30px 7px 12px;cursor:pointer;transition:all .18s;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%238894ad' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center;
+}
 .fsel:hover{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-g)}
 .fsel:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-g)}
 .fsel option{background:#fff;color:var(--text)}
-.rbtn{margin-left:auto;background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--rs);color:var(--muted2);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;cursor:pointer;transition:all .17s;white-space:nowrap;}
-.rbtn:hover{background:var(--red-s);border-color:rgba(239,68,68,.28);color:var(--red)}
-.rbtn:active{transform:scale(.97)}
-#yoy-banner{display:none;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;padding:11px 18px;background:linear-gradient(135deg,rgba(14,165,233,.06),rgba(124,58,237,.05));border:1px solid rgba(14,165,233,.18);border-radius:var(--r);font-size:12.5px;font-weight:500;color:var(--text2);}
+.rbtn{margin-left:auto;background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--rs);color:var(--muted2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.rbtn:hover{background:var(--red-s);border-color:rgba(220,38,38,.28);color:var(--red)}
+
+/* ── YOY BANNER ── */
+#yoy-banner{display:none;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px;padding:12px 20px;background:linear-gradient(135deg,rgba(8,145,178,.05),rgba(79,70,229,.04));border:1px solid rgba(8,145,178,.18);border-radius:var(--r);font-size:12.5px;font-weight:500;color:var(--text2);}
 #yoy-banner strong{font-weight:700;color:var(--text)}
-.yoy-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:6px;font-size:11.5px;font-weight:700;}
+.yoy-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;}
 .yoy-up{background:var(--green-s);color:var(--green)}
 .yoy-dn{background:var(--red-s);color:var(--red)}
-.kgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px}
-.kcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 20px;position:relative;overflow:hidden;transition:transform .22s,box-shadow .22s,border-color .22s;box-shadow:var(--sx);cursor:default;}
-.kcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;opacity:0;transition:opacity .22s;border-radius:0 0 var(--r) var(--r);}
-.kcard:nth-child(1)::after{background:var(--g1)}.kcard:nth-child(2)::after{background:var(--g2)}
-.kcard:nth-child(3)::after{background:var(--g3)}.kcard:nth-child(4)::after{background:linear-gradient(135deg,var(--amber),var(--pink))}
-.kcard:nth-child(5)::after{background:linear-gradient(135deg,var(--green),var(--teal))}
+
+/* ── KPI GRID ── */
+.kgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+.kcard{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:22px 20px;position:relative;overflow:hidden;
+  transition:transform .22s,box-shadow .22s,border-color .22s;box-shadow:var(--sx);cursor:default;
+}
+.kcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity .22s;border-radius:var(--r) var(--r) 0 0;}
+.kcard:nth-child(1)::before{background:var(--g1)}.kcard:nth-child(2)::before{background:var(--g2)}
+.kcard:nth-child(3)::before{background:var(--g3)}.kcard:nth-child(4)::before{background:linear-gradient(135deg,var(--amber),var(--pink))}
+.kcard:nth-child(5)::before{background:linear-gradient(135deg,var(--green),var(--teal))}
 .kcard:hover{transform:translateY(-3px);box-shadow:var(--sl);border-color:var(--border2)}
-.kcard:hover::after{opacity:1}
-.kh{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
-.kico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
-.kbadge{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;display:flex;align-items:center;gap:3px;}
+.kcard:hover::before{opacity:1}
+.kh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.kico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.kbadge{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:6px;display:flex;align-items:center;gap:3px;}
 .up{background:var(--green-s);color:var(--green)}.dn{background:var(--red-s);color:var(--red)}.nt{background:var(--teal-s);color:var(--teal)}
-.kval{font-size:24px;font-weight:800;letter-spacing:-1px;line-height:1;margin-bottom:4px;color:var(--text);font-variant-numeric:tabular-nums;font-family:'JetBrains Mono',monospace;}
+.kval{font-size:22px;font-weight:800;letter-spacing:-1px;line-height:1;margin-bottom:5px;color:var(--text);font-family:'DM Mono',monospace;}
 .klbl{font-size:11.5px;color:var(--muted2);font-weight:500}
-.kyoy{font-size:10.5px;color:var(--muted);margin-top:4px}
+.kyoy{font-size:10px;color:var(--muted);margin-top:5px}
+
+/* ── CHART GRIDS ── */
 .cg1{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}
 .cg2{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
 .cg3{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
-.cc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;transition:transform .22s,box-shadow .22s;box-shadow:var(--sx);}
+.cc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;transition:transform .22s,box-shadow .22s;box-shadow:var(--sx);}
 .cc:hover{transform:translateY(-2px);box-shadow:var(--sm)}
-.cch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.cch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
 .cct{font-size:13px;font-weight:700;letter-spacing:-.3px;color:var(--text)}
 .ccs{font-size:11px;color:var(--muted);margin-top:2px}
-.ccb{font-size:11px;padding:3px 9px;border-radius:6px;background:var(--surface2);color:var(--muted2);font-weight:600;border:1px solid var(--border);white-space:nowrap;margin-left:8px;flex-shrink:0;}
+.ccb{font-size:11px;padding:3px 10px;border-radius:6px;background:var(--surface2);color:var(--muted2);font-weight:600;border:1px solid var(--border);white-space:nowrap;margin-left:8px;flex-shrink:0;}
 .cw{position:relative}
-#empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 100px);animation:fadeUp .5s both;}
-.esbox{text-align:center;background:var(--surface);border:2px dashed var(--border2);border-radius:22px;padding:56px 48px;max-width:500px;width:100%;box-shadow:var(--ss);transition:border-color .2s,box-shadow .2s;}
-.esbox:hover{border-color:rgba(14,165,233,.35);box-shadow:var(--sm)}
-.esico{width:72px;height:72px;background:linear-gradient(135deg,var(--teal-s),var(--purple-s));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 20px;}
-.estitle{font-size:18px;font-weight:800;letter-spacing:-.5px;color:var(--text);margin-bottom:8px}
-.esbody{font-size:13px;color:var(--muted2);line-height:1.72;margin-bottom:28px}
-.esbtn{display:inline-flex;align-items:center;gap:9px;background:var(--g1);border:none;border-radius:var(--rs);color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;padding:12px 28px;cursor:pointer;transition:all .2s;box-shadow:0 6px 20px rgba(14,165,233,.26);letter-spacing:-.2px;}
-.esbtn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(14,165,233,.38);filter:brightness(1.07)}
+
+/* ── EMPTY STATE ── */
+#empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 110px);animation:fadeUp .5s both;}
+.esbox{text-align:center;background:var(--surface);border:2px dashed var(--border2);border-radius:24px;padding:60px 52px;max-width:520px;width:100%;box-shadow:var(--ss);transition:border-color .2s,box-shadow .2s;}
+.esbox:hover{border-color:rgba(8,145,178,.35);box-shadow:var(--sm)}
+.esico{width:76px;height:76px;background:linear-gradient(135deg,var(--teal-s),var(--indigo-s));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 22px;}
+.estitle{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;letter-spacing:-.4px;color:var(--text);margin-bottom:10px}
+.esbody{font-size:13.5px;color:var(--muted2);line-height:1.75;margin-bottom:30px}
+.esbtn{display:inline-flex;align-items:center;gap:10px;background:var(--g1);border:none;border-radius:var(--rs);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;padding:13px 30px;cursor:pointer;transition:all .2s;box-shadow:0 6px 22px rgba(8,145,178,.28);letter-spacing:-.1px;}
+.esbtn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(8,145,178,.40);filter:brightness(1.06)}
 .esbtn:active{transform:scale(.97)}
-.eshint{margin-top:18px;font-size:11.5px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
-.igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.icard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;gap:13px;align-items:flex-start;transition:transform .22s,box-shadow .22s,border-color .22s;box-shadow:var(--sx);}
+.eshint{margin-top:20px;font-size:11.5px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
+
+/* ── INSIGHTS GRID ── */
+.igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.icard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;display:flex;gap:14px;align-items:flex-start;transition:transform .22s,box-shadow .22s,border-color .22s;box-shadow:var(--sx);}
 .icard:hover{transform:translateY(-2px);box-shadow:var(--sm);border-color:var(--border2)}
-.iico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.ititle{font-size:12.5px;font-weight:700;margin-bottom:4px;color:var(--text);letter-spacing:-.2px}
+.iico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ititle{font-size:12.5px;font-weight:700;margin-bottom:5px;color:var(--text);letter-spacing:-.2px}
 .ibody{font-size:11.5px;color:var(--muted2);line-height:1.65}
-.div{height:1px;background:var(--border);margin:4px 0 20px}
-#pdf-area{background:var(--bg)}
-.ov{position:fixed;inset:0;background:rgba(255,255,255,.80);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.div{height:1px;background:var(--border);margin:4px 0 22px}
+
+/* ── FOOTER ── */
+footer{
+  margin-top:36px;padding:22px 28px;
+  background:var(--surface);border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.footer-brand{display:flex;align-items:center;gap:10px}
+.footer-logo{width:28px;height:28px;background:var(--g1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:13px;font-weight:800;color:#fff;}
+.footer-name{font-size:13px;font-weight:700;color:var(--text2);letter-spacing:-.2px}
+.footer-tagline{font-size:11px;color:var(--muted)}
+.footer-r{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.footer-r strong{color:var(--indigo);font-weight:700}
+
+/* ── OVERLAY & TOAST ── */
+.ov{position:fixed;inset:0;background:rgba(240,242,248,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;opacity:0;pointer-events:none;transition:opacity .2s;}
 .ov.on{opacity:1;pointer-events:all}
-.spin{width:44px;height:44px;border:3px solid var(--border2);border-top-color:var(--teal);border-radius:50%;animation:sp .75s linear infinite;}
+.spin{width:46px;height:46px;border:3px solid var(--border2);border-top-color:var(--teal);border-radius:50%;animation:sp .75s linear infinite;}
 @keyframes sp{to{transform:rotate(360deg)}}
-.ov-msg{font-size:13.5px;color:var(--muted2);font-weight:600}
-.toast{position:fixed;bottom:26px;right:26px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 17px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;box-shadow:var(--sl);z-index:1000;transform:translateY(20px);opacity:0;transition:all .32s cubic-bezier(.34,1.56,.64,1);max-width:360px;color:var(--text2);}
+.ov-msg{font-size:14px;color:var(--muted2);font-weight:600}
+.toast{position:fixed;bottom:28px;right:28px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 18px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:var(--sl);z-index:1000;transform:translateY(20px);opacity:0;transition:all .32s cubic-bezier(.34,1.56,.64,1);max-width:380px;color:var(--text2);}
 .toast.on{transform:translateY(0);opacity:1}
 .toast.ok{border-left:3px solid var(--green)}.toast.err{border-left:3px solid var(--red)}.toast.info{border-left:3px solid var(--teal)}
-body.drag::before{content:'Drop your Excel file to upload';position:fixed;inset:12px;background:rgba(14,165,233,.04);border:2.5px dashed rgba(14,165,233,.4);border-radius:20px;z-index:998;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--teal);pointer-events:none;}
+
+/* ── DRAG OVERLAY ── */
+body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;background:rgba(8,145,178,.04);border:2.5px dashed rgba(8,145,178,.4);border-radius:22px;z-index:998;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--teal);pointer-events:none;}
+
+/* ── ANIMATIONS ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .anim{animation:fadeUp .45s both}
 .a1{animation-delay:.04s}.a2{animation-delay:.08s}.a3{animation-delay:.12s}
 .a4{animation-delay:.16s}.a5{animation-delay:.20s}
+
+/* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-@media(max-width:1260px){.kgrid{grid-template-columns:repeat(3,1fr)}.cg1{grid-template-columns:1fr}.cg2{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:780px){main{padding:18px 14px}header{padding:0 14px;height:58px}.hd-title{font-size:13px}.kgrid{grid-template-columns:repeat(2,1fr)}.cg2,.cg3,.igrid{grid-template-columns:1fr}.fbar{gap:6px}.fsel{font-size:12px}.btn span{display:none}}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ══════════════════════════════════════════ */
+
+/* TABLET: ≤ 1260px – 2-col KPIs, 2-col charts */
+@media(max-width:1260px){
+  .kgrid{grid-template-columns:repeat(3,1fr)}
+  .cg1{grid-template-columns:1fr}
+  .cg2{grid-template-columns:repeat(2,1fr)}
+}
+
+/* LARGE TABLET: ≤ 900px – stacked chart grids */
+@media(max-width:900px){
+  main{padding:20px 18px 0}
+  header{padding:0 18px}
+  .kgrid{grid-template-columns:repeat(2,1fr)}
+  .cg2{grid-template-columns:1fr 1fr}
+  .cg3{grid-template-columns:1fr}
+  .igrid{grid-template-columns:repeat(2,1fr)}
+  .hd-r .pill-teal,.hd-r .btn-pdf{display:none}
+}
+
+/* MOBILE: ≤ 640px – single column, hamburger, smaller text */
+@media(max-width:640px){
+  header{padding:0 14px;height:62px}
+  .hamburger{display:flex}
+  .hd-r .btn-primary span,.hd-r .pill-green{display:none}
+  .hd-r .btn-primary{padding:8px 12px}
+  main{padding:16px 14px 0}
+  .kgrid{grid-template-columns:1fr 1fr;gap:10px}
+  .kval{font-size:18px}
+  .kcard{padding:16px 14px}
+  .cg1,.cg2,.cg3{grid-template-columns:1fr}
+  .igrid{grid-template-columns:1fr}
+  .fbar{flex-direction:column;align-items:stretch;padding:12px 14px;gap:8px}
+  .fsel{width:100%}
+  .rbtn{width:100%;text-align:center;margin-left:0}
+  .hd-brand{font-size:14px}
+  .hd-sub{display:none}
+  footer{flex-direction:column;align-items:flex-start;padding:18px 14px;gap:8px}
+  .esbox{padding:40px 28px}
+  .estitle{font-size:18px}
+}
+
+/* VERY SMALL: ≤ 380px */
+@media(max-width:380px){
+  .kgrid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 
 <header>
   <div class="hd-l">
-    <div class="logo">E</div>
+    <div class="logo">S</div>
     <div>
-      <div class="hd-title">Executive Sales Dashboard</div>
+      <div class="hd-brand">Smart Audit System</div>
       <div class="hd-sub" id="hd-sub">Upload a file to begin analysis</div>
     </div>
   </div>
   <div class="hd-r">
     <div id="file-badge"></div>
     <button class="btn btn-pdf" id="pdf-btn" style="display:none" onclick="exportPDF()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      <span>Download PDF Report</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span>PDF Report</span>
     </button>
     <label class="btn btn-primary" for="file-input">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      <span>Upload Excel</span>
+      <span>Upload Data</span>
     </label>
     <input type="file" id="file-input" accept=".xlsx,.xls,.csv">
     <div class="pill pill-green"><span class="live-dot"></span>Live</div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<!-- Mobile nav drawer -->
+<div class="mobile-nav" id="mobile-nav">
+  <div id="mobile-file-badge"></div>
+  <label class="btn btn-primary" for="file-input" style="justify-content:center">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    Upload Data File
+  </label>
+  <button class="btn btn-pdf" id="pdf-btn-mobile" style="display:none;justify-content:center" onclick="exportPDF()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    Download PDF Report
+  </button>
+</div>
 
 <div class="ov" id="ov"><div class="spin"></div><div class="ov-msg" id="ov-msg">Processing...</div></div>
 <div class="toast" id="toast"><span id="t-ico"></span><span id="t-msg"></span></div>
 
 <main>
+  <!-- Filter Bar -->
   <div class="fbar" id="fbar" style="display:none">
     <span class="fl">Filter by</span>
     <select class="fsel" id="f-year"><option value="all">All Years</option></select>
@@ -161,706 +309,647 @@ body.drag::before{content:'Drop your Excel file to upload';position:fixed;inset:
     <select class="fsel" id="f-seg"><option value="all">All Segments</option></select>
     <select class="fsel" id="f-cat"><option value="all">All Categories</option></select>
     <select class="fsel" id="f-ship"><option value="all">All Ship Modes</option></select>
-    <button class="rbtn" id="reset-btn">Reset</button>
+    <button class="rbtn" id="reset-btn">↺ Reset</button>
   </div>
 
+  <!-- Empty State -->
   <div id="empty-state">
     <div class="esbox">
-      <div class="esico">&#128202;</div>
-      <div class="estitle">No data available</div>
-      <div class="esbody">Upload your sales Excel file to instantly populate KPIs, charts, and actionable insights.</div>
+      <div class="esico">📊</div>
+      <div class="estitle">No data loaded yet</div>
+      <div class="esbody">Upload your sales or audit Excel file to instantly generate KPIs, trend charts, and actionable executive insights.</div>
       <label class="esbtn" for="file-input">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Upload Sales Data (Excel)
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Upload Data File (Excel / CSV)
       </label>
       <div class="eshint">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Supports .xlsx, .xls, .csv and drag &amp; drop
+        Supports .xlsx, .xls, .csv — drag &amp; drop supported
       </div>
     </div>
   </div>
 
+  <!-- Dashboard -->
   <div id="dash" style="display:none">
     <div id="pdf-area">
       <div id="yoy-banner"></div>
+
       <div class="sec">Key Performance Indicators</div>
       <div class="kgrid">
         <div class="kcard anim a1">
-          <div class="kh"><div class="kico" style="background:var(--teal-s)">&#128176;</div><div class="kbadge nt" id="kb-rev">-</div></div>
+          <div class="kh"><div class="kico" style="background:var(--teal-s)">💰</div><div class="kbadge nt" id="kb-rev">-</div></div>
           <div class="kval" id="kv-rev">Rs. 0</div>
           <div class="klbl">Total Revenue</div><div class="kyoy" id="ky-rev"></div>
         </div>
         <div class="kcard anim a2">
-          <div class="kh"><div class="kico" style="background:var(--purple-s)">&#128200;</div><div class="kbadge nt" id="kb-prof">-</div></div>
+          <div class="kh"><div class="kico" style="background:var(--violet-s)">📈</div><div class="kbadge nt" id="kb-prof">-</div></div>
           <div class="kval" id="kv-prof">Rs. 0</div>
           <div class="klbl">Total Profit</div><div class="kyoy" id="ky-prof"></div>
         </div>
         <div class="kcard anim a3">
-          <div class="kh"><div class="kico" style="background:var(--green-s)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="kbadge nt" id="kb-marg">-</div></div>
+          <div class="kh"><div class="kico" style="background:var(--green-s)">💲</div><div class="kbadge nt" id="kb-marg">-</div></div>
           <div class="kval" id="kv-marg">0%</div>
           <div class="klbl">Profit Margin</div><div class="kyoy" id="ky-marg"></div>
         </div>
         <div class="kcard anim a4">
-          <div class="kh"><div class="kico" style="background:var(--amber-s)">&#128230;</div><div class="kbadge nt" id="kb-ord">-</div></div>
+          <div class="kh"><div class="kico" style="background:var(--amber-s)">📦</div><div class="kbadge nt" id="kb-ord">-</div></div>
           <div class="kval" id="kv-ord">0</div>
           <div class="klbl">Total Orders</div><div class="kyoy" id="ky-ord"></div>
         </div>
         <div class="kcard anim a5">
-          <div class="kh"><div class="kico" style="background:var(--pink-s)">&#128101;</div><div class="kbadge nt" id="kb-cust">-</div></div>
+          <div class="kh"><div class="kico" style="background:var(--pink-s)">👥</div><div class="kbadge nt" id="kb-cust">-</div></div>
           <div class="kval" id="kv-cust">0</div>
           <div class="klbl">Unique Customers</div><div class="kyoy" id="ky-cust"></div>
         </div>
       </div>
+
       <div class="div"></div>
       <div class="sec">Trend Analysis</div>
       <div class="cg1">
         <div class="cc anim"><div class="cch"><div><div class="cct">Sales &amp; Profit Trend</div><div class="ccs">Monthly performance over time</div></div><div class="ccb">Monthly</div></div><div class="cw" style="height:248px"><canvas id="lineChart"></canvas></div></div>
-        <div class="cc anim"><div class="cch"><div><div class="cct">Category Share</div><div class="ccs">Revenue by product category</div></div></div><div class="cw" style="height:248px"><canvas id="donutChart"></canvas></div></div>
+        <div class="cc anim"><div class="cch"><div><div class="cct">Category Share</div><div class="ccs">Revenue by category</div></div></div><div class="cw" style="height:248px"><canvas id="donutChart"></canvas></div></div>
       </div>
+
       <div class="sec">Regional &amp; Product Breakdown</div>
       <div class="cg2">
         <div class="cc anim"><div class="cch"><div><div class="cct">Region Performance</div><div class="ccs">Sales &amp; profit by region</div></div></div><div class="cw" style="height:204px"><canvas id="barChart"></canvas></div></div>
         <div class="cc anim"><div class="cch"><div><div class="cct">Sales vs Profit</div><div class="ccs">Bubble size = quantity</div></div></div><div class="cw" style="height:204px"><canvas id="bubbleChart"></canvas></div></div>
         <div class="cc anim"><div class="cch"><div><div class="cct">Top 8 States / Cities</div><div class="ccs">By total revenue</div></div></div><div class="cw" style="height:204px"><canvas id="hbarChart"></canvas></div></div>
       </div>
+
       <div class="sec">Segment &amp; Discount Analysis</div>
       <div class="cg3">
         <div class="cc anim"><div class="cch"><div><div class="cct">Segment Growth</div><div class="ccs">Stacked sales by year &amp; segment</div></div></div><div class="cw" style="height:218px"><canvas id="stackedChart"></canvas></div></div>
         <div class="cc anim"><div class="cch"><div><div class="cct">Discount vs Profit Impact</div><div class="ccs">Avg profit by discount tier</div></div></div><div class="cw" style="height:218px"><canvas id="discountChart"></canvas></div></div>
       </div>
+
       <div class="sec">Dynamic Insights</div>
       <div class="igrid" id="igrid"></div>
     </div>
   </div>
 </main>
 
+<!-- Footer -->
+<footer>
+  <div class="footer-brand">
+    <div class="footer-logo">S</div>
+    <div>
+      <div class="footer-name">Smart Audit System</div>
+      <div class="footer-tagline">Executive-grade analytics, simplified</div>
+    </div>
+  </div>
+  <div class="footer-r">Built by <strong>Anoushey</strong> &nbsp;·&nbsp; © 2026 Smart Audit System</div>
+</footer>
+
 <script>
 'use strict';
+var rawData=[], charts={};
 
-let rawData = [];
-let charts  = {};
-
-// ── PKR Formatter ────────────────────────────────────────
-function fmtPKR(val, compact) {
-  const abs  = Math.abs(val);
-  const sign = val < 0 ? '-' : '';
-  if (compact) {
-    if (abs >= 1e7)  return sign + 'Rs. ' + (abs/1e7).toFixed(2)  + ' Cr';
-    if (abs >= 1e5)  return sign + 'Rs. ' + (abs/1e5).toFixed(2)  + ' L';
-    if (abs >= 1000) return sign + 'Rs. ' + (abs/1000).toFixed(1) + 'K';
-    return sign + 'Rs. ' + abs.toFixed(0);
+/* ═══════════════════════════════════════════
+   FORMATTERS
+   ═══════════════════════════════════════════ */
+function fmtPKR(val,compact){
+  var abs=Math.abs(val),sign=val<0?'-':'';
+  if(compact){
+    if(abs>=1e7)  return sign+'Rs. '+(abs/1e7).toFixed(2)+' Cr';
+    if(abs>=1e5)  return sign+'Rs. '+(abs/1e5).toFixed(2)+' L';
+    if(abs>=1000) return sign+'Rs. '+(abs/1000).toFixed(1)+'K';
+    return sign+'Rs. '+abs.toFixed(0);
   }
-  const n = Math.round(Math.abs(val));
-  const s = String(n);
-  let result = '';
-  if (s.length <= 3) {
-    result = s;
-  } else {
-    result = s.slice(-3);
-    let rem = s.slice(0, -3);
-    while (rem.length > 2) { result = rem.slice(-2) + ',' + result; rem = rem.slice(0,-2); }
-    result = rem + ',' + result;
-  }
-  return sign + 'Rs. ' + result;
+  var n=Math.round(Math.abs(val)),s=String(n),result='';
+  if(s.length<=3){result=s;}else{result=s.slice(-3);var rem=s.slice(0,-3);while(rem.length>2){result=rem.slice(-2)+','+result;rem=rem.slice(0,-2);}result=rem+','+result;}
+  return sign+'Rs. '+result;
 }
 
-// ── Chart defaults ───────────────────────────────────────
-Chart.defaults.color       = '#94a3b8';
-Chart.defaults.borderColor = '#e5e7ef';
-Chart.defaults.font.family = "'Inter',sans-serif";
-Chart.defaults.font.size   = 11.5;
-const C   = { teal:'#0ea5e9', purple:'#7c3aed', pink:'#ec4899', green:'#10b981', amber:'#f59e0b', blue:'#3b82f6' };
-const TIP = { backgroundColor:'#fff', borderColor:'#e5e7ef', borderWidth:1, titleColor:'#0f172a', bodyColor:'#64748b', padding:12, boxPadding:5, cornerRadius:10 };
+/* ═══════════════════════════════════════════
+   CHART DEFAULTS
+   ═══════════════════════════════════════════ */
+Chart.defaults.color='#8894ad';
+Chart.defaults.borderColor='#e2e5f0';
+Chart.defaults.font.family="'DM Sans',sans-serif";
+Chart.defaults.font.size=11.5;
+var C={teal:'#0891b2',indigo:'#4f46e5',violet:'#7c3aed',pink:'#db2777',green:'#059669',amber:'#d97706',blue:'#2563eb'};
+var TIP={backgroundColor:'#fff',borderColor:'#e2e5f0',borderWidth:1,titleColor:'#0c1220',bodyColor:'#5a6a84',padding:13,boxPadding:5,cornerRadius:11};
 
-// ── Toast / overlay ──────────────────────────────────────
-function toast(msg, type, icon) {
-  type = type || 'ok'; icon = icon || '';
-  const el = document.getElementById('toast');
-  document.getElementById('t-msg').textContent = msg;
-  document.getElementById('t-ico').textContent = icon;
-  el.className = 'toast ' + type;
-  requestAnimationFrame(function() {
-    el.classList.add('on');
-    clearTimeout(el._t);
-    el._t = setTimeout(function(){ el.classList.remove('on'); }, 4500);
-  });
+/* ═══════════════════════════════════════════
+   TOAST / OVERLAY
+   ═══════════════════════════════════════════ */
+function toast(msg,type,icon){
+  type=type||'ok';icon=icon||'';
+  var el=document.getElementById('toast');
+  document.getElementById('t-msg').textContent=msg;
+  document.getElementById('t-ico').textContent=icon;
+  el.className='toast '+type;
+  requestAnimationFrame(function(){el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove('on');},4800);});
 }
-function showOv(msg) { document.getElementById('ov-msg').textContent = msg || 'Processing...'; document.getElementById('ov').classList.add('on'); }
-function hideOv()    { document.getElementById('ov').classList.remove('on'); }
+function showOv(msg){document.getElementById('ov-msg').textContent=msg||'Processing...';document.getElementById('ov').classList.add('on');}
+function hideOv(){document.getElementById('ov').classList.remove('on');}
 
-// ── Date parser ──────────────────────────────────────────
-function parseDate(v) {
-  if (v == null || v === '') return null;
-  if (typeof v === 'number') { var d = new Date(Math.round((v-25569)*86400000)); return isNaN(d)?null:d; }
-  if (v instanceof Date) return isNaN(v)?null:v;
-  if (typeof v === 'string') {
-    var s = v.trim(), d = new Date(s);
-    if (!isNaN(d)) return d;
-    var p = s.split(/[\/\-\.]/);
-    if (p.length===3) { d = p[0].length===4 ? new Date(p[0]+'-'+p[1].padStart(2,'0')+'-'+p[2].padStart(2,'0')) : new Date(p[2]+'-'+p[0].padStart(2,'0')+'-'+p[1].padStart(2,'0')); if(!isNaN(d)) return d; }
+/* ═══════════════════════════════════════════
+   HAMBURGER MENU
+   ═══════════════════════════════════════════ */
+document.getElementById('hamburger').addEventListener('click',function(){
+  this.classList.toggle('open');
+  var nav=document.getElementById('mobile-nav');
+  nav.classList.toggle('open');
+});
+
+/* ═══════════════════════════════════════════
+   DATE PARSER
+   ═══════════════════════════════════════════ */
+function parseDate(v){
+  if(v==null||v==='') return null;
+  if(typeof v==='number'){var d=new Date(Math.round((v-25569)*86400000));return isNaN(d)?null:d;}
+  if(v instanceof Date) return isNaN(v)?null:v;
+  if(typeof v==='string'){
+    var s=v.trim(),d=new Date(s);
+    if(!isNaN(d)) return d;
+    var p=s.split(/[\/\-\.]/);
+    if(p.length===3){d=p[0].length===4?new Date(p[0]+'-'+p[1].padStart(2,'0')+'-'+p[2].padStart(2,'0')):new Date(p[2]+'-'+p[0].padStart(2,'0')+'-'+p[1].padStart(2,'0'));if(!isNaN(d))return d;}
   }
   return null;
 }
-function toStr(d) { if(!d) return ''; return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function toStr(d){if(!d)return '';return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 
-// ── Row normaliser ───────────────────────────────────────
-function norm(row) {
-  var get = function(k) {
-    var key = Object.keys(row).find(function(r){ return r.toLowerCase().replace(/[\s_\-]/g,'')===k.toLowerCase(); });
-    return key !== undefined ? row[key] : '';
-  };
-  var od = parseDate(get('orderdate')), sd = parseDate(get('shipdate'));
+/* ═══════════════════════════════════════════
+   SMART COLUMN FINDER — keyword-based, case-insensitive
+   ═══════════════════════════════════════════ */
+function normalizeKey(k){return String(k).toLowerCase().replace(/[\s_\-\(\)\/]/g,'');}
+
+function findCol(row,aliases){
+  var keys=Object.keys(row);
+  for(var i=0;i<aliases.length;i++){
+    var alias=normalizeKey(aliases[i]);
+    var found=keys.find(function(k){return normalizeKey(k)===alias;});
+    if(found!==undefined) return found;
+  }
+  // Partial match fallback
+  for(var i=0;i<aliases.length;i++){
+    var alias=normalizeKey(aliases[i]);
+    var found=keys.find(function(k){return normalizeKey(k).includes(alias)||alias.includes(normalizeKey(k));});
+    if(found!==undefined) return found;
+  }
+  return null;
+}
+
+function getVal(row,aliases,fallback){
+  var col=findCol(row,aliases);
+  if(col===null||col===undefined) return fallback!==undefined?fallback:'';
+  var v=row[col];
+  return (v===null||v===undefined||v==='') ? (fallback!==undefined?fallback:'') : v;
+}
+
+/* ═══════════════════════════════════════════
+   REQUIRED COLUMN CHECKER
+   ═══════════════════════════════════════════ */
+var SALES_ALIASES  =['sales','revenue','amount','salespkr','salepkr','totalsales','totalrevenue','totalamount','netsales','grosssales'];
+var DATE_ALIASES   =['date','orderdate','transactiondate','period','saledate','invoicedate','reportdate','orderdate'];
+var PROFIT_ALIASES =['profit','earnings','margin','profitpkr','netprofit','grossprofitmargin','earning','netearnings'];
+var DISCOUNT_ALIASES=['discount','discountrate','disc','discountpct','discountpercent'];
+var REGION_ALIASES =['region','location','city','province','area','territory','zone','district','state','country'];
+var SEGMENT_ALIASES=['segment','customersegment','marketsegment','customertier','tier','clientsegment'];
+var CAT_ALIASES    =['category','producttype','servicetype','productcategory','itemcategory','type','productgroup'];
+var SUBCAT_ALIASES =['subcategory','subcat','subcategoryname','productsubcategory'];
+var SHIP_ALIASES   =['shipmode','shippingmode','shipmethod','deliverymode','shippingmethod','dispatchmode'];
+var CUSTID_ALIASES =['customerid','clientid','custid','customernumber','clientcode','buyerid'];
+
+function checkRequiredCols(rows){
+  if(!rows||!rows.length) return {ok:false,msg:'The file appears to be empty.'};
+  var sample=rows[0];
+  var hasSales  = findCol(sample,SALES_ALIASES)!==null;
+  var hasDate   = findCol(sample,DATE_ALIASES)!==null;
+  if(!hasSales&&!hasDate) return {ok:false,msg:'Required columns (Sales/Date) not found. Please check your file format.'};
+  if(!hasSales) return {ok:false,msg:'A Sales or Revenue column was not found. Please check your file format.'};
+  if(!hasDate)  return {ok:false,msg:'A Date column was not found. Please check your file format.'};
+  return {ok:true};
+}
+
+/* ═══════════════════════════════════════════
+   UNIVERSAL ROW NORMALISER
+   ═══════════════════════════════════════════ */
+function norm(row){
+  var salesRaw   = getVal(row,SALES_ALIASES,0);
+  var profitRaw  = getVal(row,PROFIT_ALIASES,0);
+  var discRaw    = getVal(row,DISCOUNT_ALIASES,0);
+  var qtyRaw     = getVal(row,['quantity','qty','units','unitssold','volume','count'],0);
+  var dateRaw    = getVal(row,DATE_ALIASES,null);
+  var regionRaw  = getVal(row,REGION_ALIASES,'All Regions');
+  var segRaw     = getVal(row,SEGMENT_ALIASES,'General');
+  var catRaw     = getVal(row,CAT_ALIASES,'General');
+  var subCatRaw  = getVal(row,SUBCAT_ALIASES,'');
+  var shipRaw    = getVal(row,SHIP_ALIASES,'Standard');
+  var custIdRaw  = getVal(row,CUSTID_ALIASES,'CUST-'+Math.floor(Math.random()*9999));
+  var stateRaw   = getVal(row,['state','states','province','region','city','district','area'],'');
+
+  var sales    = isNaN(parseFloat(salesRaw))  ? 0 : parseFloat(salesRaw);
+  var profit   = isNaN(parseFloat(profitRaw)) ? 0 : parseFloat(profitRaw);
+  var discount = isNaN(parseFloat(discRaw))   ? 0 : parseFloat(discRaw);
+  var quantity = isNaN(parseInt(qtyRaw))      ? 1 : parseInt(qtyRaw);
+
+  var od=parseDate(dateRaw), sd=null;
   return {
-    orderDate:toStr(od), shipDate:toStr(sd),
-    shipMode:String(get('shipmode')||'').trim(),
-    customerId:String(get('customerid')||'').trim(),
-    category:String(get('category')||'').trim(),
-    subCategory:String(get('subcategory')||'').trim(),
-    segment:String(get('segment')||'').trim(),
-    region:String(get('region')||'').trim(),
-    state:String(get('state')||'').trim(),
-    sales:parseFloat(get('sales'))||0, profit:parseFloat(get('profit'))||0,
-    quantity:parseInt(get('quantity'))||0, discount:parseFloat(get('discount'))||0,
-    year:od?od.getFullYear():null, month:od?od.getMonth()+1:null
+    orderDate:toStr(od),shipDate:toStr(sd),
+    shipMode:String(shipRaw||'Standard').trim(),
+    customerId:String(custIdRaw||'').trim(),
+    category:String(catRaw||'General').trim()||'General',
+    subCategory:String(subCatRaw||'').trim(),
+    segment:String(segRaw||'General').trim()||'General',
+    region:String(regionRaw||'All Regions').trim()||'All Regions',
+    state:String(stateRaw||regionRaw||'').trim(),
+    sales,profit,quantity,discount,
+    year:od?od.getFullYear():null,
+    month:od?od.getMonth()+1:null
   };
 }
 
-// ── Filter helpers ───────────────────────────────────────
-function rebuildFilters(data) {
-  var uniq = function(f){ return [...new Set(data.map(function(d){return d[f];}))].filter(Boolean).sort(); };
-  var pop  = function(id, vals, label) {
-    var s = document.getElementById(id); s.innerHTML = '<option value="all">'+label+'</option>';
-    vals.forEach(function(v){ var o=document.createElement('option'); o.value=v; o.textContent=v; s.appendChild(o); }); s.value='all';
-  };
+/* ═══════════════════════════════════════════
+   FILTERS
+   ═══════════════════════════════════════════ */
+function rebuildFilters(data){
+  var uniq=function(f){return[...new Set(data.map(function(d){return d[f];}))].filter(Boolean).sort();};
+  var pop=function(id,vals,label){var s=document.getElementById(id);s.innerHTML='<option value="all">'+label+'</option>';vals.forEach(function(v){var o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);});s.value='all';};
   pop('f-year',  uniq('year'),    'All Years');
   pop('f-region',uniq('region'),  'All Regions');
   pop('f-seg',   uniq('segment'), 'All Segments');
   pop('f-cat',   uniq('category'),'All Categories');
   pop('f-ship',  uniq('shipMode'),'All Ship Modes');
 }
-function getF() {
-  return { year:document.getElementById('f-year').value, region:document.getElementById('f-region').value, seg:document.getElementById('f-seg').value, cat:document.getElementById('f-cat').value, ship:document.getElementById('f-ship').value };
-}
-function filtered() {
-  var f = getF();
+function getF(){return{year:document.getElementById('f-year').value,region:document.getElementById('f-region').value,seg:document.getElementById('f-seg').value,cat:document.getElementById('f-cat').value,ship:document.getElementById('f-ship').value};}
+function filtered(){
+  var f=getF();
   return rawData.filter(function(d){
-    return (f.year==='all'||String(d.year)===f.year)&&(f.region==='all'||d.region===f.region)&&
+    return(f.year==='all'||String(d.year)===f.year)&&(f.region==='all'||d.region===f.region)&&
            (f.seg==='all'||d.segment===f.seg)&&(f.cat==='all'||d.category===f.cat)&&(f.ship==='all'||d.shipMode===f.ship);
   });
 }
 
-// ── YoY logic ────────────────────────────────────────────
-function computeYoY(data) {
-  var years = [...new Set(data.map(function(d){return d.year;}))].filter(Boolean).sort(function(a,b){return b-a;});
-  if (years.length < 2) return null;
-  var curYear=years[0], prevYear=years[1];
-  var curData=data.filter(function(d){return d.year===curYear;}), prevData=data.filter(function(d){return d.year===prevYear;});
-  if (!curData.length||!prevData.length) return null;
-  var agg = function(rows){ return { rev:rows.reduce(function(s,d){return s+d.sales;},0), prof:rows.reduce(function(s,d){return s+d.profit;},0), ord:rows.length, cust:new Set(rows.map(function(d){return d.customerId;})).size }; };
-  var cur=agg(curData), prev=agg(prevData);
-  var pct = function(c,p){ return p===0?null:((c-p)/Math.abs(p))*100; };
-  var curMarg=cur.rev>0?(cur.prof/cur.rev)*100:0, prevMarg=prev.rev>0?(prev.prof/prev.rev)*100:0;
-  return { curYear, prevYear, rev:{cur:cur.rev,prev:prev.rev,pct:pct(cur.rev,prev.rev)}, prof:{cur:cur.prof,prev:prev.prof,pct:pct(cur.prof,prev.prof)}, marg:{cur:curMarg,prev:prevMarg,pct:pct(curMarg,prevMarg)}, ord:{cur:cur.ord,prev:prev.ord,pct:pct(cur.ord,prev.ord)}, cust:{cur:cur.cust,prev:prev.cust,pct:pct(cur.cust,prev.cust)} };
+/* ═══════════════════════════════════════════
+   YOY
+   ═══════════════════════════════════════════ */
+function computeYoY(data){
+  var years=[...new Set(data.map(function(d){return d.year;}))].filter(Boolean).sort(function(a,b){return b-a;});
+  if(years.length<2) return null;
+  var curYear=years[0],prevYear=years[1];
+  var curD=data.filter(function(d){return d.year===curYear;}),prevD=data.filter(function(d){return d.year===prevYear;});
+  if(!curD.length||!prevD.length) return null;
+  var agg=function(rows){return{rev:rows.reduce(function(s,d){return s+d.sales;},0),prof:rows.reduce(function(s,d){return s+d.profit;},0),ord:rows.length,cust:new Set(rows.map(function(d){return d.customerId;})).size};};
+  var cur=agg(curD),prev=agg(prevD);
+  var pct=function(c,p){return p===0?null:((c-p)/Math.abs(p))*100;};
+  var cM=cur.rev>0?(cur.prof/cur.rev)*100:0,pM=prev.rev>0?(prev.prof/prev.rev)*100:0;
+  return{curYear,prevYear,rev:{cur:cur.rev,prev:prev.rev,pct:pct(cur.rev,prev.rev)},prof:{cur:cur.prof,prev:prev.prof,pct:pct(cur.prof,prev.prof)},marg:{cur:cM,prev:pM,pct:pct(cM,pM)},ord:{cur:cur.ord,prev:prev.ord,pct:pct(cur.ord,prev.ord)},cust:{cur:cur.cust,prev:prev.cust,pct:pct(cur.cust,prev.cust)}};
 }
 
-// ── Animated counter ─────────────────────────────────────
-function countTo(el, target, mode, dec) {
-  dec = dec || 0;
-  var dur=800, t0=performance.now();
-  (function tick(t){
-    var p=Math.min((t-t0)/dur,1), e=1-Math.pow(1-p,3), v=target*e;
-    if      (mode==='pkr') el.textContent=fmtPKR(v);
-    else if (mode==='pct') el.textContent=v.toFixed(dec)+'%';
-    else                   el.textContent=Math.round(v).toLocaleString('en-PK');
-    if(p<1) requestAnimationFrame(tick);
+/* ═══════════════════════════════════════════
+   ANIMATED COUNTER
+   ═══════════════════════════════════════════ */
+function countTo(el,target,mode,dec){
+  dec=dec||0;var dur=800,t0=performance.now();
+  (function tick(t){var p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,3),v=target*e;
+    if(mode==='pkr')el.textContent=fmtPKR(v);
+    else if(mode==='pct')el.textContent=v.toFixed(dec)+'%';
+    else el.textContent=Math.round(v).toLocaleString();
+    if(p<1)requestAnimationFrame(tick);
   })(t0);
 }
 
-// ── KPI update ───────────────────────────────────────────
-function updateKPIs(data) {
-  var rev=data.reduce(function(s,d){return s+d.sales;},0), prof=data.reduce(function(s,d){return s+d.profit;},0);
-  var marg=rev>0?(prof/rev)*100:0, custs=new Set(data.map(function(d){return d.customerId;})).size;
-  countTo(document.getElementById('kv-rev'),  rev,  'pkr');
-  countTo(document.getElementById('kv-prof'), prof, 'pkr');
-  countTo(document.getElementById('kv-marg'), marg, 'pct', 1);
-  countTo(document.getElementById('kv-ord'),  data.length, 'num');
-  countTo(document.getElementById('kv-cust'), custs, 'num');
-  document.getElementById('kv-prof').style.color = prof>=0?'var(--green)':'var(--red)';
-  document.getElementById('kv-marg').style.color = marg>=0?'var(--green)':'var(--red)';
-  updateYoY(computeYoY(data), rev, prof, marg, data.length, custs);
+/* ═══════════════════════════════════════════
+   KPI UPDATE
+   ═══════════════════════════════════════════ */
+function updateKPIs(data){
+  var rev=data.reduce(function(s,d){return s+d.sales;},0);
+  var prof=data.reduce(function(s,d){return s+d.profit;},0);
+  var marg=rev>0?(prof/rev)*100:0;
+  var custs=new Set(data.map(function(d){return d.customerId;})).size;
+  countTo(document.getElementById('kv-rev'),rev,'pkr');
+  countTo(document.getElementById('kv-prof'),prof,'pkr');
+  countTo(document.getElementById('kv-marg'),marg,'pct',1);
+  countTo(document.getElementById('kv-ord'),data.length,'num');
+  countTo(document.getElementById('kv-cust'),custs,'num');
+  document.getElementById('kv-prof').style.color=prof>=0?'var(--green)':'var(--red)';
+  document.getElementById('kv-marg').style.color=marg>=0?'var(--green)':'var(--red)';
+  updateYoY(computeYoY(data));
 }
-function setBadge(id, pct) {
-  var el=document.getElementById(id);
-  if(pct===null){el.textContent='-';el.className='kbadge nt';return;}
-  el.textContent=(pct>=0?'+ ':'-')+Math.abs(pct).toFixed(1)+'%';
-  el.className='kbadge '+(pct>=0?'up':'dn');
-}
-function setYoyNote(id, yoyObj, prev, mode) {
-  var el=document.getElementById(id);
-  if(!yoyObj||prev===null){el.textContent='';return;}
-  var fmtd=mode==='pkr'?fmtPKR(prev):mode==='pct'?prev.toFixed(1)+'%':Math.round(prev).toLocaleString('en-PK');
-  el.textContent='vs '+yoyObj.prevYear+': '+fmtd;
-}
-function updateYoY(yoy) {
+function setBadge(id,pct){var el=document.getElementById(id);if(pct===null){el.textContent='-';el.className='kbadge nt';return;}el.textContent=(pct>=0?'↑ ':'↓ ')+Math.abs(pct).toFixed(1)+'%';el.className='kbadge '+(pct>=0?'up':'dn');}
+function setYoyNote(id,yoyObj,prev,mode){var el=document.getElementById(id);if(!yoyObj||prev===null){el.textContent='';return;}var fmtd=mode==='pkr'?fmtPKR(prev):mode==='pct'?prev.toFixed(1)+'%':Math.round(prev).toLocaleString();el.textContent='vs '+yoyObj.prevYear+': '+fmtd;}
+function updateYoY(yoy){
   var banner=document.getElementById('yoy-banner');
-  if(!yoy){['kb-rev','kb-prof','kb-marg','kb-ord','kb-cust'].forEach(function(id){setBadge(id,null);}); ['ky-rev','ky-prof','ky-marg','ky-ord','ky-cust'].forEach(function(id){document.getElementById(id).textContent='';}); banner.style.display='none';return;}
-  setBadge('kb-rev',yoy.rev.pct); setBadge('kb-prof',yoy.prof.pct); setBadge('kb-marg',yoy.marg.pct); setBadge('kb-ord',yoy.ord.pct); setBadge('kb-cust',yoy.cust.pct);
-  setYoyNote('ky-rev',yoy,yoy.rev.prev,'pkr'); setYoyNote('ky-prof',yoy,yoy.prof.prev,'pkr'); setYoyNote('ky-marg',yoy,yoy.marg.prev,'pct'); setYoyNote('ky-ord',yoy,yoy.ord.prev,'num'); setYoyNote('ky-cust',yoy,yoy.cust.prev,'num');
-  var chip=function(v){return v===null?'':'<span class="yoy-chip '+(v>=0?'yoy-up':'yoy-dn')+'">'+(v>=0?'+':'')+Math.abs(v).toFixed(1)+'%</span>';};
+  if(!yoy){['kb-rev','kb-prof','kb-marg','kb-ord','kb-cust'].forEach(function(id){setBadge(id,null);});['ky-rev','ky-prof','ky-marg','ky-ord','ky-cust'].forEach(function(id){document.getElementById(id).textContent='';});banner.style.display='none';return;}
+  setBadge('kb-rev',yoy.rev.pct);setBadge('kb-prof',yoy.prof.pct);setBadge('kb-marg',yoy.marg.pct);setBadge('kb-ord',yoy.ord.pct);setBadge('kb-cust',yoy.cust.pct);
+  setYoyNote('ky-rev',yoy,yoy.rev.prev,'pkr');setYoyNote('ky-prof',yoy,yoy.prof.prev,'pkr');setYoyNote('ky-marg',yoy,yoy.marg.prev,'pct');setYoyNote('ky-ord',yoy,yoy.ord.prev,'num');setYoyNote('ky-cust',yoy,yoy.cust.prev,'num');
+  var chip=function(v){return v===null?'':'<span class="yoy-chip '+(v>=0?'yoy-up':'yoy-dn')+'">'+(v>=0?'↑':'↓')+Math.abs(v).toFixed(1)+'%</span>';};
   banner.style.display='flex';
-  banner.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><strong>Year-over-Year</strong><span style="color:var(--muted)">Showing <strong style="color:var(--text)">'+yoy.curYear+'</strong> vs <strong style="color:var(--text)">'+yoy.prevYear+'</strong></span>&nbsp;&middot;&nbsp; Revenue '+chip(yoy.rev.pct)+'&nbsp; Profit '+chip(yoy.prof.pct)+'&nbsp; Orders '+chip(yoy.ord.pct)+'&nbsp; Margin '+chip(yoy.marg.pct);
+  banner.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><strong>Year-over-Year</strong><span style="color:var(--muted)">Showing <strong style="color:var(--text)">'+yoy.curYear+'</strong> vs <strong style="color:var(--text)">'+yoy.prevYear+'</strong></span>&nbsp;·&nbsp; Revenue '+chip(yoy.rev.pct)+'&nbsp; Profit '+chip(yoy.prof.pct)+'&nbsp; Orders '+chip(yoy.ord.pct)+'&nbsp; Margin '+chip(yoy.marg.pct);
 }
 
-// ── Charts ───────────────────────────────────────────────
-function lineChart(data) {
+/* ═══════════════════════════════════════════
+   CHARTS — all have responsive:true, maintainAspectRatio:false
+   ═══════════════════════════════════════════ */
+function lineChart(data){
   var map={};
-  data.forEach(function(d){var k=d.year+'-'+String(d.month).padStart(2,'0');if(!map[k])map[k]={s:0,p:0};map[k].s+=d.sales;map[k].p+=d.profit;});
-  var keys=Object.keys(map).sort(), MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  data.forEach(function(d){if(!d.year||!d.month)return;var k=d.year+'-'+String(d.month).padStart(2,'0');if(!map[k])map[k]={s:0,p:0};map[k].s+=d.sales;map[k].p+=d.profit;});
+  var keys=Object.keys(map).sort(),MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var labels=keys.map(function(k){var p=k.split('-');return MN[+p[1]-1]+" '"+p[0].slice(2);});
   var ctx=document.getElementById('lineChart').getContext('2d');
-  if(charts.line) charts.line.destroy();
-  charts.line=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[
-    {label:'Sales',data:keys.map(function(k){return map[k].s;}),borderColor:C.teal,backgroundColor:function(cx){var g=cx.chart.ctx.createLinearGradient(0,0,0,248);g.addColorStop(0,'rgba(14,165,233,.15)');g.addColorStop(1,'rgba(14,165,233,0)');return g;},borderWidth:2.2,pointRadius:0,pointHoverRadius:5,tension:.4,fill:true},
-    {label:'Profit',data:keys.map(function(k){return map[k].p;}),borderColor:C.purple,backgroundColor:function(cx){var g=cx.chart.ctx.createLinearGradient(0,0,0,248);g.addColorStop(0,'rgba(124,58,237,.12)');g.addColorStop(1,'rgba(124,58,237,0)');return g;},borderWidth:2.2,pointRadius:0,pointHoverRadius:5,tension:.4,fill:true}
-  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:700,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',boxWidth:7,padding:18}},tooltip:{...TIP,callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtPKR(c.raw,true);}}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:9,maxRotation:0}},y:{grid:{color:'#f0f2f7'},ticks:{callback:function(v){return fmtPKR(v,true);}}}}}});
+  if(charts.line)charts.line.destroy();
+  charts.line=new Chart(ctx,{type:'line',data:{labels,datasets:[
+    {label:'Sales',data:keys.map(function(k){return map[k].s;}),borderColor:C.teal,backgroundColor:function(cx){var g=cx.chart.ctx.createLinearGradient(0,0,0,248);g.addColorStop(0,'rgba(8,145,178,.15)');g.addColorStop(1,'rgba(8,145,178,0)');return g;},borderWidth:2.2,pointRadius:0,pointHoverRadius:5,tension:.4,fill:true},
+    {label:'Profit',data:keys.map(function(k){return map[k].p;}),borderColor:C.indigo,backgroundColor:function(cx){var g=cx.chart.ctx.createLinearGradient(0,0,0,248);g.addColorStop(0,'rgba(79,70,229,.12)');g.addColorStop(1,'rgba(79,70,229,0)');return g;},borderWidth:2.2,pointRadius:0,pointHoverRadius:5,tension:.4,fill:true}
+  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:700,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',boxWidth:7,padding:18}},tooltip:{...TIP,callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtPKR(c.raw,true);}}}},scales:{x:{grid:{display:false},ticks:{maxTicksLimit:9,maxRotation:0}},y:{grid:{color:'#eef0f7'},ticks:{callback:function(v){return fmtPKR(v,true);}}}}}});
 }
 
-function donutChart(data) {
+function donutChart(data){
   var map={};
-  data.forEach(function(d){map[d.category]=(map[d.category]||0)+d.sales;});
+  data.forEach(function(d){if(d.category)map[d.category]=(map[d.category]||0)+d.sales;});
   var cats=Object.keys(map);
   var ctx=document.getElementById('donutChart').getContext('2d');
-  if(charts.donut) charts.donut.destroy();
-  charts.donut=new Chart(ctx,{type:'doughnut',data:{labels:cats,datasets:[{data:cats.map(function(c){return map[c];}),backgroundColor:[C.teal,C.purple,C.amber,C.pink,C.green],borderColor:'#fff',borderWidth:3,hoverOffset:10}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',animation:{duration:700,animateRotate:true,animateScale:true},plugins:{legend:{position:'bottom',labels:{padding:18,usePointStyle:true,pointStyle:'circle',boxWidth:8}},tooltip:{...TIP,callbacks:{label:function(c){var tot=cats.reduce(function(s,x){return s+map[x];},0);return ' '+fmtPKR(c.raw,true)+' ('+((c.raw/tot*100).toFixed(1))+'%)';}}}}}});
+  if(charts.donut)charts.donut.destroy();
+  charts.donut=new Chart(ctx,{type:'doughnut',data:{labels:cats,datasets:[{data:cats.map(function(c){return map[c];}),backgroundColor:[C.teal,C.indigo,C.amber,C.pink,C.green],borderColor:'#fff',borderWidth:3,hoverOffset:10}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',animation:{duration:700,animateRotate:true,animateScale:true},plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true,pointStyle:'circle',boxWidth:8}},tooltip:{...TIP,callbacks:{label:function(c){var tot=cats.reduce(function(s,x){return s+map[x];},0);return ' '+fmtPKR(c.raw,true)+' ('+((c.raw/tot*100).toFixed(1))+'%)';}}}}}}); 
 }
 
-function barChart(data) {
+function barChart(data){
   var map={};
   data.forEach(function(d){if(!map[d.region])map[d.region]={s:0,p:0};map[d.region].s+=d.sales;map[d.region].p+=d.profit;});
   var regs=Object.keys(map);
   var ctx=document.getElementById('barChart').getContext('2d');
-  if(charts.bar) charts.bar.destroy();
-  charts.bar=new Chart(ctx,{type:'bar',data:{labels:regs,datasets:[{label:'Sales',data:regs.map(function(r){return map[r].s;}),backgroundColor:'rgba(14,165,233,.72)',borderRadius:6,borderSkipped:false},{label:'Profit',data:regs.map(function(r){return map[r].p;}),backgroundColor:'rgba(124,58,237,.68)',borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:700,easing:'easeOutQuart'},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',boxWidth:7,padding:16}},tooltip:{...TIP,callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtPKR(c.raw,true);}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#f0f2f7'},ticks:{callback:function(v){return fmtPKR(v,true);}}}}}});
+  if(charts.bar)charts.bar.destroy();
+  charts.bar=new Chart(ctx,{type:'bar',data:{labels:regs,datasets:[{label:'Sales',data:regs.map(function(r){return map[r].s;}),backgroundColor:'rgba(8,145,178,.72)',borderRadius:6,borderSkipped:false},{label:'Profit',data:regs.map(function(r){return map[r].p;}),backgroundColor:'rgba(79,70,229,.68)',borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:700,easing:'easeOutQuart'},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',boxWidth:7,padding:14}},tooltip:{...TIP,callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtPKR(c.raw,true);}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#eef0f7'},ticks:{callback:function(v){return fmtPKR(v,true);}}}}}});
 }
 
-function bubbleChart(data) {
-  var clr={'Furniture':C.amber,'Office Supplies':C.green,'Technology':C.pink};
-  var cats=[...new Set(data.map(function(d){return d.category;}))];
+function bubbleChart(data){
+  var clr={};var cats=[...new Set(data.map(function(d){return d.category;}))];
+  var pal=[C.amber,C.green,C.pink,C.indigo,C.teal];
+  cats.forEach(function(c,i){clr[c]=pal[i%pal.length];});
   var ctx=document.getElementById('bubbleChart').getContext('2d');
-  if(charts.bubble) charts.bubble.destroy();
+  if(charts.bubble)charts.bubble.destroy();
   charts.bubble=new Chart(ctx,{type:'bubble',data:{datasets:cats.map(function(cat){
-    var rows=data.filter(function(d){return d.category===cat;}), bkt={};
-    rows.forEach(function(d){var k=Math.floor(d.sales/80)*80;if(!bkt[k])bkt[k]={s:0,p:0,q:0,n:0};bkt[k].s+=d.sales;bkt[k].p+=d.profit;bkt[k].q+=d.quantity;bkt[k].n++;});
+    var rows=data.filter(function(d){return d.category===cat;}),bkt={};
+    rows.forEach(function(d){var k=Math.floor((d.sales||0)/80)*80;if(!bkt[k])bkt[k]={s:0,p:0,q:0,n:0};bkt[k].s+=d.sales;bkt[k].p+=d.profit;bkt[k].q+=d.quantity;bkt[k].n++;});
     var col=clr[cat]||C.blue;
     return{label:cat,data:Object.values(bkt).map(function(b){return{x:b.s/b.n,y:b.p/b.n,r:Math.max(4,Math.min(22,b.q/b.n*1.6))};}),backgroundColor:col+'99',borderColor:col,borderWidth:1.5};
-  })},options:{responsive:true,maintainAspectRatio:false,animation:{duration:700},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',boxWidth:7,padding:14}},tooltip:{...TIP,callbacks:{label:function(c){return ' '+fmtPKR(c.raw.x,true)+' | Profit '+fmtPKR(c.raw.y,true);}}}},scales:{x:{grid:{color:'#f0f2f7'},title:{display:true,text:'Avg Sales',color:'#94a3b8'},ticks:{callback:function(v){return fmtPKR(v,true);}}},y:{grid:{color:'#f0f2f7'},title:{display:true,text:'Avg Profit',color:'#94a3b8'},ticks:{callback:function(v){return fmtPKR(v,true);}}}}}});
+  })},options:{responsive:true,maintainAspectRatio:false,animation:{duration:700},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',boxWidth:7,padding:12}},tooltip:{...TIP,callbacks:{label:function(c){return ' '+fmtPKR(c.raw.x,true)+' | Profit '+fmtPKR(c.raw.y,true);}}}},scales:{x:{grid:{color:'#eef0f7'},title:{display:true,text:'Avg Sales',color:'#8894ad'},ticks:{callback:function(v){return fmtPKR(v,true);}}},y:{grid:{color:'#eef0f7'},title:{display:true,text:'Avg Profit',color:'#8894ad'},ticks:{callback:function(v){return fmtPKR(v,true);}}}}}});
 }
 
-function hbarChart(data) {
+function hbarChart(data){
   var map={};
-  data.forEach(function(d){map[d.state]=(map[d.state]||0)+d.sales;});
+  data.forEach(function(d){var loc=d.state||d.region||'Unknown';map[loc]=(map[loc]||0)+d.sales;});
   var top=Object.entries(map).sort(function(a,b){return b[1]-a[1];}).slice(0,8);
   var ctx=document.getElementById('hbarChart').getContext('2d');
-  if(charts.hbar) charts.hbar.destroy();
-  charts.hbar=new Chart(ctx,{type:'bar',data:{labels:top.map(function(s){return s[0];}),datasets:[{label:'Sales',data:top.map(function(s){return s[1];}),backgroundColor:top.map(function(_,i){return 'hsla('+(200+i*16)+',76%,52%,.76)';}),borderRadius:6,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:{duration:700,easing:'easeOutQuart'},plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:function(c){return ' '+fmtPKR(c.raw,true);}}}},scales:{x:{grid:{color:'#f0f2f7'},ticks:{callback:function(v){return fmtPKR(v,true);}}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+  if(charts.hbar)charts.hbar.destroy();
+  charts.hbar=new Chart(ctx,{type:'bar',data:{labels:top.map(function(s){return s[0];}),datasets:[{label:'Sales',data:top.map(function(s){return s[1];}),backgroundColor:top.map(function(_,i){return 'hsla('+(190+i*18)+',72%,48%,.76)';}),borderRadius:6,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:{duration:700,easing:'easeOutQuart'},plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:function(c){return ' '+fmtPKR(c.raw,true);}}}},scales:{x:{grid:{color:'#eef0f7'},ticks:{callback:function(v){return fmtPKR(v,true);}}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
 }
 
-function stackedChart(data) {
+function stackedChart(data){
   var years=[...new Set(data.map(function(d){return String(d.year);}))].filter(Boolean).sort();
   var segs=[...new Set(data.map(function(d){return d.segment;}))].filter(Boolean).sort();
-  var pal=[C.teal,C.purple,C.pink,C.amber,C.green], map={};
+  var pal=[C.teal,C.indigo,C.pink,C.amber,C.green],map={};
   segs.forEach(function(s){map[s]={};years.forEach(function(y){map[s][y]=0;});});
   data.forEach(function(d){if(map[d.segment])map[d.segment][String(d.year)]=(map[d.segment][String(d.year)]||0)+d.sales;});
   var ctx=document.getElementById('stackedChart').getContext('2d');
-  if(charts.stk) charts.stk.destroy();
-  charts.stk=new Chart(ctx,{type:'bar',data:{labels:years,datasets:segs.map(function(s,i){return{label:s,data:years.map(function(y){return map[s][y];}),backgroundColor:pal[i%pal.length]+'cc',borderRadius:4,borderSkipped:false};})},options:{responsive:true,maintainAspectRatio:false,animation:{duration:700},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',boxWidth:7,padding:14}},tooltip:{mode:'index',...TIP,callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtPKR(c.raw,true);}}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#f0f2f7'},ticks:{callback:function(v){return fmtPKR(v,true);}}}}}});
+  if(charts.stk)charts.stk.destroy();
+  charts.stk=new Chart(ctx,{type:'bar',data:{labels:years,datasets:segs.map(function(s,i){return{label:s,data:years.map(function(y){return map[s][y];}),backgroundColor:pal[i%pal.length]+'cc',borderRadius:4,borderSkipped:false};})},options:{responsive:true,maintainAspectRatio:false,animation:{duration:700},plugins:{legend:{labels:{usePointStyle:true,pointStyle:'circle',boxWidth:7,padding:14}},tooltip:{mode:'index',...TIP,callbacks:{label:function(c){return ' '+c.dataset.label+': '+fmtPKR(c.raw,true);}}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'#eef0f7'},ticks:{callback:function(v){return fmtPKR(v,true);}}}}}});
 }
 
-function discountChart(data) {
-  var tiers=['0%','1-10%','11-20%','21-30%','31-40%','41-50%'], bkt=[[],[],[],[],[],[]];
+function discountChart(data){
+  var tiers=['0%','1–10%','11–20%','21–30%','31–40%','41–50%'],bkt=[[],[],[],[],[],[]];
   data.forEach(function(d){var p=d.discount*100;if(p===0)bkt[0].push(d.profit);else if(p<=10)bkt[1].push(d.profit);else if(p<=20)bkt[2].push(d.profit);else if(p<=30)bkt[3].push(d.profit);else if(p<=40)bkt[4].push(d.profit);else bkt[5].push(d.profit);});
   var avgs=bkt.map(function(b){return b.length?b.reduce(function(s,v){return s+v;},0)/b.length:0;});
   var ctx=document.getElementById('discountChart').getContext('2d');
-  if(charts.disc) charts.disc.destroy();
-  charts.disc=new Chart(ctx,{type:'line',data:{labels:tiers,datasets:[{label:'Avg Profit',data:avgs,borderColor:C.amber,backgroundColor:function(cx){var g=cx.chart.ctx.createLinearGradient(0,0,0,218);g.addColorStop(0,'rgba(245,158,11,.2)');g.addColorStop(1,'rgba(245,158,11,0)');return g;},borderWidth:2.5,fill:true,tension:.4,pointRadius:5,pointBackgroundColor:C.amber,pointBorderColor:'#fff',pointBorderWidth:2.5}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:700},plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:function(c){return ' Avg Profit: '+fmtPKR(c.raw,true);}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#f0f2f7'},ticks:{callback:function(v){return fmtPKR(v,true);}}}}}});
+  if(charts.disc)charts.disc.destroy();
+  charts.disc=new Chart(ctx,{type:'line',data:{labels:tiers,datasets:[{label:'Avg Profit',data:avgs,borderColor:C.amber,backgroundColor:function(cx){var g=cx.chart.ctx.createLinearGradient(0,0,0,218);g.addColorStop(0,'rgba(217,119,6,.20)');g.addColorStop(1,'rgba(217,119,6,0)');return g;},borderWidth:2.5,fill:true,tension:.4,pointRadius:5,pointBackgroundColor:C.amber,pointBorderColor:'#fff',pointBorderWidth:2.5}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:700},plugins:{legend:{display:false},tooltip:{...TIP,callbacks:{label:function(c){return ' Avg Profit: '+fmtPKR(c.raw,true);}}}},scales:{x:{grid:{display:false}},y:{grid:{color:'#eef0f7'},ticks:{callback:function(v){return fmtPKR(v,true);}}}}}});
 }
 
-// ── Web insights (unchanged UI logic) ────────────────────
-function insights(data) {
-  var cm={}, rm={}, ts=0, tp=0;
+/* ═══════════════════════════════════════════
+   WEB INSIGHTS
+   ═══════════════════════════════════════════ */
+function insights(data){
+  var cm={},rm={},ts=0,tp=0;
   data.forEach(function(d){
-    cm[d.category]=cm[d.category]||{s:0,p:0,n:0}; cm[d.category].s+=d.sales; cm[d.category].p+=d.profit; cm[d.category].n++;
-    rm[d.region]=rm[d.region]||{s:0}; rm[d.region].s+=d.sales; ts+=d.sales; tp+=d.profit;
+    cm[d.category]=cm[d.category]||{s:0,p:0,n:0};cm[d.category].s+=d.sales;cm[d.category].p+=d.profit;cm[d.category].n++;
+    rm[d.region]=rm[d.region]||{s:0};rm[d.region].s+=d.sales;ts+=d.sales;tp+=d.profit;
   });
   var bestCat=Object.entries(cm).sort(function(a,b){return b[1].p-a[1].p;})[0];
   var worstCat=Object.entries(cm).sort(function(a,b){return a[1].p-b[1].p;})[0];
   var bestReg=Object.entries(rm).sort(function(a,b){return b[1].s-a[1].s;})[0];
-  var dH=data.filter(function(d){return d.discount>.2;}), dP=dH.reduce(function(s,d){return s+d.profit;},0);
+  var dH=data.filter(function(d){return d.discount>.2;}),dP=dH.length?dH.reduce(function(s,d){return s+d.profit;},0)/dH.length:0;
   var mg=ts>0?(tp/ts*100).toFixed(1):0;
   var defs=[
-    {icon:'&#128200;',bg:'var(--teal-s)',title:bestCat?bestCat[0]+' Leads in Profit':'No Category Data',body:bestCat?bestCat[0]+' generated '+fmtPKR(bestCat[1].p,true)+' profit across '+bestCat[1].n+' orders.':'No data.'},
-    {icon:'&#9888;&#65039;',bg:'var(--amber-s)',title:'High Discounts Erode Profit',body:dH.length?'Orders over 20% discount average '+fmtPKR(dP/dH.length,true)+' profit per order.':'No high-discount orders in this selection.'},
-    {icon:'&#127758;',bg:'var(--purple-s)',title:bestReg?bestReg[0]+' Leads Regionally':'No Region Data',body:bestReg?bestReg[0]+' drives '+fmtPKR(bestReg[1].s,true)+' in revenue.':'No data.'},
-    {icon:tp>=0?'&#9989;':'&#128308;',bg:tp>=0?'var(--green-s)':'var(--red-s)',title:'Overall Margin: '+mg+'%',body:fmtPKR(tp,true)+' profit on '+fmtPKR(ts,true)+' revenue. '+(+mg>15?'Excellent performance.':(+mg>5?'Healthy - room to grow.':'Margin under pressure.'))},
-    {icon:'&#128161;',bg:'rgba(59,130,246,.08)',title:worstCat?worstCat[0]+' Needs Attention':'No Data',body:worstCat&&worstCat[1].p<0?worstCat[0]+' is loss-making ('+fmtPKR(worstCat[1].p,true)+'). Revisit discount strategy.':(worstCat?worstCat[0]+' has the lowest margins - optimize sourcing or pricing.':'')},
+    {icon:'📈',bg:'var(--teal-s)',title:bestCat?bestCat[0]+' Leads in Profit':'No Category Data',body:bestCat?bestCat[0]+' generated '+fmtPKR(bestCat[1].p,true)+' profit across '+bestCat[1].n+' orders.':'No data.'},
+    {icon:'⚠️',bg:'var(--amber-s)',title:'High Discounts Erode Profit',body:dH.length?'Orders over 20% discount average '+fmtPKR(dP,true)+' profit per order.':'No high-discount orders in this selection.'},
+    {icon:'🌍',bg:'var(--violet-s)',title:bestReg?bestReg[0]+' Leads Regionally':'No Region Data',body:bestReg?bestReg[0]+' drives '+fmtPKR(bestReg[1].s,true)+' in revenue.':'No data.'},
+    {icon:tp>=0?'✅':'🔴',bg:tp>=0?'var(--green-s)':'var(--red-s)',title:'Overall Margin: '+mg+'%',body:fmtPKR(tp,true)+' profit on '+fmtPKR(ts,true)+' revenue. '+(+mg>15?'Excellent performance.':(+mg>5?'Healthy — room to grow.':'Margin under pressure.'))},
+    {icon:'💡',bg:'rgba(37,99,235,.08)',title:worstCat?worstCat[0]+' Needs Attention':'No Data',body:worstCat&&worstCat[1].p<0?worstCat[0]+' is loss-making ('+fmtPKR(worstCat[1].p,true)+'). Revisit pricing & discounts.':(worstCat?worstCat[0]+' has the lowest margins — optimize sourcing or pricing.':'')},
   ];
-  var grid=document.getElementById('igrid'); grid.innerHTML='';
+  var grid=document.getElementById('igrid');grid.innerHTML='';
   defs.forEach(function(d,i){
-    var c=document.createElement('div'); c.className='icard anim'; c.style.animationDelay=.05*i+'s';
+    var c=document.createElement('div');c.className='icard anim';c.style.animationDelay=.05*i+'s';
     c.innerHTML='<div class="iico" style="background:'+d.bg+'">'+d.icon+'</div><div><div class="ititle">'+d.title+'</div><div class="ibody">'+d.body+'</div></div>';
     grid.appendChild(c);
   });
 }
 
-// ═══════════════════════════════════════════════════════════
-// GENERATE SIMPLE INSIGHTS FOR PDF (FIXED - no emoji, pure ASCII)
-// Returns array of {title, body} objects safe for jsPDF text()
-// ═══════════════════════════════════════════════════════════
-function generateSimpleInsights(data) {
-  var cm={}, rm={}, ts=0, tp=0;
+/* ═══════════════════════════════════════════
+   SIMPLE INSIGHTS FOR PDF
+   ═══════════════════════════════════════════ */
+function generateSimpleInsights(data){
+  var cm={},rm={},ts=0,tp=0;
   data.forEach(function(d){
-    cm[d.category]=cm[d.category]||{s:0,p:0,n:0}; cm[d.category].s+=d.sales; cm[d.category].p+=d.profit; cm[d.category].n++;
-    rm[d.region]=rm[d.region]||{s:0}; rm[d.region].s+=d.sales; ts+=d.sales; tp+=d.profit;
+    cm[d.category]=cm[d.category]||{s:0,p:0,n:0};cm[d.category].s+=d.sales;cm[d.category].p+=d.profit;cm[d.category].n++;
+    rm[d.region]=rm[d.region]||{s:0};rm[d.region].s+=d.sales;ts+=d.sales;tp+=d.profit;
   });
   var bestCat=Object.entries(cm).sort(function(a,b){return b[1].p-a[1].p;})[0];
   var worstCat=Object.entries(cm).sort(function(a,b){return a[1].p-b[1].p;})[0];
   var bestReg=Object.entries(rm).sort(function(a,b){return b[1].s-a[1].s;})[0];
-  var dH=data.filter(function(d){return d.discount>.2;}), dP=dH.length?dH.reduce(function(s,d){return s+d.profit;},0)/dH.length:0;
+  var dH=data.filter(function(d){return d.discount>.2;}),dP=dH.length?dH.reduce(function(s,d){return s+d.profit;},0)/dH.length:0;
   var mg=ts>0?((tp/ts)*100):0;
-  var yoy=computeYoY(data);
-  var insights=[];
-
-  insights.push({
-    title: 'Total Revenue Overview',
-    body: 'The business generated total revenue of '+fmtPKR(ts)+' with a net profit of '+fmtPKR(tp)+'. The overall profit margin stands at '+mg.toFixed(1)+'%. '+(mg>15?'Performance is excellent.':mg>5?'Performance is healthy with room for growth.':'Margins are under pressure - a pricing and cost review is recommended.')
-  });
-
-  if (bestReg) {
-    insights.push({
-      title: 'Top Selling Region: '+bestReg[0],
-      body: bestReg[0]+' is the highest performing region with total revenue of '+fmtPKR(bestReg[1].s)+'. Focusing additional sales and marketing resources on this region may yield further growth.'
-    });
-  }
-
-  if (bestCat) {
-    insights.push({
-      title: 'Most Profitable Category: '+bestCat[0],
-      body: bestCat[0]+' leads all categories with '+fmtPKR(bestCat[1].p)+' in total profit across '+bestCat[1].n+' orders. This category represents a strong core business driver and should be prioritized.'
-    });
-  }
-
-  if (worstCat && worstCat[1].p < 0) {
-    insights.push({
-      title: 'Loss-Making Category: '+worstCat[0],
-      body: worstCat[0]+' is operating at a loss of '+fmtPKR(Math.abs(worstCat[1].p))+'. An immediate review of pricing, discounting and supplier costs is recommended to return this category to profitability.'
-    });
-  } else if (worstCat) {
-    insights.push({
-      title: 'Lowest Margin Category: '+worstCat[0],
-      body: worstCat[0]+' has the lowest profit margin among all categories. Optimizing sourcing costs and reviewing the discount policy for this segment could improve overall profitability.'
-    });
-  }
-
-  if (dH.length > 0) {
-    insights.push({
-      title: 'High Discount Impact',
-      body: 'Orders with discounts exceeding 20% average only '+fmtPKR(dP)+' profit per order. Excessive discounting is directly eroding margins. A stricter discount approval policy is advised.'
-    });
-  }
-
-  if (yoy) {
-    var revDir=yoy.rev.pct>=0?'grew':'declined', profDir=yoy.prof.pct>=0?'grew':'declined';
-    insights.push({
-      title: 'Year-over-Year Performance ('+yoy.curYear+' vs '+yoy.prevYear+')',
-      body: 'Revenue '+revDir+' by '+Math.abs(yoy.rev.pct).toFixed(1)+'% and profit '+profDir+' by '+Math.abs(yoy.prof.pct).toFixed(1)+'% compared to the prior year. Order volume '+(yoy.ord.pct>=0?'increased':'decreased')+' by '+Math.abs(yoy.ord.pct).toFixed(1)+'%.'
-    });
-  }
-
-  return insights;
+  var yoy=computeYoY(data),arr=[];
+  arr.push({title:'Total Revenue Overview',body:'The business generated total revenue of '+fmtPKR(ts)+' with a net profit of '+fmtPKR(tp)+'. The overall profit margin stands at '+mg.toFixed(1)+'%. '+(mg>15?'Performance is excellent.':mg>5?'Performance is healthy with room for growth.':'Margins are under pressure.')});
+  if(bestReg)arr.push({title:'Top Region: '+bestReg[0],body:bestReg[0]+' is the highest performing region with total revenue of '+fmtPKR(bestReg[1].s)+'. Additional sales focus here may yield further growth.'});
+  if(bestCat)arr.push({title:'Most Profitable Category: '+bestCat[0],body:bestCat[0]+' leads all categories with '+fmtPKR(bestCat[1].p)+' in total profit across '+bestCat[1].n+' orders.'});
+  if(worstCat&&worstCat[1].p<0)arr.push({title:'Loss-Making Category: '+worstCat[0],body:worstCat[0]+' is operating at a loss of '+fmtPKR(Math.abs(worstCat[1].p))+'. A review of pricing and supplier costs is recommended.'});
+  else if(worstCat)arr.push({title:'Lowest Margin Category: '+worstCat[0],body:worstCat[0]+' has the lowest profit margin. Optimizing sourcing costs and discount policy could improve overall profitability.'});
+  if(dH.length>0)arr.push({title:'High Discount Impact',body:'Orders with discounts exceeding 20% average only '+fmtPKR(dP)+' profit per order. A stricter discount policy is advised.'});
+  if(yoy){var rD=yoy.rev.pct>=0?'grew':'declined',pD=yoy.prof.pct>=0?'grew':'declined';arr.push({title:'YoY Performance ('+yoy.curYear+' vs '+yoy.prevYear+')',body:'Revenue '+rD+' by '+Math.abs(yoy.rev.pct).toFixed(1)+'% and profit '+pD+' by '+Math.abs(yoy.prof.pct).toFixed(1)+'%. Orders '+(yoy.ord.pct>=0?'increased':'decreased')+' by '+Math.abs(yoy.ord.pct).toFixed(1)+'%.'});}
+  return arr;
 }
 
-// ═══════════════════════════════════════════════════════════
-// EXPORT PDF - FIXED: explicit font resets before every doc.text()
-// All text uses helvetica to prevent broken character symbols
-// ═══════════════════════════════════════════════════════════
-function exportPDF() {
+/* ═══════════════════════════════════════════
+   PDF EXPORT
+   ═══════════════════════════════════════════ */
+function exportPDF(){
   var btn=document.getElementById('pdf-btn');
   btn.classList.add('loading');
   btn.innerHTML='<div class="spin" style="width:14px;height:14px;border-width:2px;margin-right:6px"></div><span>Generating...</span>';
   showOv('Building your PDF report...');
-
   setTimeout(function(){
-    try {
+    try{
       var jsPDF=window.jspdf.jsPDF;
       var pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-      var pW=pdf.internal.pageSize.getWidth(), pH=pdf.internal.pageSize.getHeight();
-      var M=14, cW=pW-M*2, y=0;
+      var pW=pdf.internal.pageSize.getWidth(),pH=pdf.internal.pageSize.getHeight(),M=14,cW=pW-M*2,y=0;
+      function hexRgb(hex){return[parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)];}
+      function setFill(hex){var c=hexRgb(hex);pdf.setFillColor(c[0],c[1],c[2]);}
+      function setTxt(hex){var c=hexRgb(hex);pdf.setTextColor(c[0],c[1],c[2]);}
+      function safeText(text,x,ty,opts,fontStyle,fontSize){fontStyle=fontStyle||'normal';fontSize=fontSize||9;pdf.setFont('helvetica',fontStyle);pdf.setFontSize(fontSize);if(opts){pdf.text(String(text),x,ty,opts);}else{pdf.text(String(text),x,ty);}}
 
-      // ── Color helpers ────────────────────────────────
-      function hexRgb(hex){ return [parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)]; }
-      function setFill(hex){ var c=hexRgb(hex); pdf.setFillColor(c[0],c[1],c[2]); }
-      function setTxt(hex){ var c=hexRgb(hex); pdf.setTextColor(c[0],c[1],c[2]); }
-      // ── Safe text: always resets font before writing ──
-      function safeText(text, x, ty, opts, fontStyle, fontSize) {
-        fontStyle = fontStyle || 'normal';
-        fontSize  = fontSize  || 9;
-        pdf.setFont('helvetica', fontStyle);
-        pdf.setFontSize(fontSize);
-        if (opts) { pdf.text(String(text), x, ty, opts); }
-        else      { pdf.text(String(text), x, ty); }
-      }
-
-      // ── Cover header ─────────────────────────────────
-      setFill('#0ea5e9'); pdf.rect(0,0,pW,32,'F');
-      setFill('#0284c7'); pdf.rect(0,26,pW,6,'F');
+      setFill('#0891b2');pdf.rect(0,0,pW,32,'F');
+      setFill('#0e7490');pdf.rect(0,26,pW,6,'F');
       setTxt('#ffffff');
-      safeText('Executive Sales Dashboard', M, 14, null, 'bold', 18);
+      safeText('Smart Audit System — Executive Sales Dashboard',M,13,null,'bold',16);
       var sub=document.getElementById('hd-sub').textContent;
-      safeText(sub, M, 21, null, 'normal', 9);
+      safeText(sub,M,21,null,'normal',9);
       var dateStr=new Date().toLocaleDateString('en-PK',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
-      safeText('Report generated: '+dateStr, pW-M, 21, {align:'right'}, 'normal', 9);
+      safeText('Report generated: '+dateStr,pW-M,21,{align:'right'},'normal',9);
       y=38;
 
-      // ── Section title helper ──────────────────────────
-      function sectionTitle(title){
-        if(y>pH-30){pdf.addPage();y=M;}
-        setFill('#f4f5f9'); pdf.roundedRect(M,y,cW,7,2,2,'F');
-        setTxt('#334155');
-        safeText(title.toUpperCase(), M+3, y+4.8, null, 'bold', 8);
-        y+=10;
-      }
+      function sectionTitle(title){if(y>pH-30){pdf.addPage();y=M;}setFill('#f0f2f8');pdf.roundedRect(M,y,cW,7,2,2,'F');setTxt('#2d3a52');safeText(title.toUpperCase(),M+3,y+4.8,null,'bold',8);y+=10;}
 
-      // ── KPI card helper ───────────────────────────────
-      function kpiCard(x,cy,w,h,label,value,badge,badgeClr){
-        setFill('#ffffff'); pdf.roundedRect(x,cy,w,h,3,3,'F');
-        pdf.setDrawColor(229,231,239); pdf.setLineWidth(0.3); pdf.roundedRect(x,cy,w,h,3,3,'S');
-        setTxt('#94a3b8');
-        safeText(label, x+4, cy+6, null, 'normal', 7);
-        setTxt('#0f172a');
-        safeText(String(value), x+4, cy+13, {maxWidth:w-8}, 'bold', 10);
-        if(badge){
-          var bClr=badgeClr==='up'?'#10b981':badgeClr==='dn'?'#ef4444':'#0ea5e9';
-          var bBg =badgeClr==='up'?'#f0fdf4':badgeClr==='dn'?'#fef2f2':'#f0f9ff';
-          setFill(bBg);
-          pdf.setFont('helvetica','bold'); pdf.setFontSize(6.5);
-          var bW=pdf.getTextWidth(badge)+4;
-          pdf.roundedRect(x+w-bW-3,cy+2,bW,5,1.5,1.5,'F');
-          var bc=hexRgb(bClr); pdf.setTextColor(bc[0],bc[1],bc[2]);
-          safeText(badge, x+w-bW/2-3+bW/2, cy+5.5, {align:'center'}, 'bold', 6.5);
-        }
-      }
+      function kpiCard(x,cy,w,h,label,value,badge,badgeClr){setFill('#ffffff');pdf.roundedRect(x,cy,w,h,3,3,'F');pdf.setDrawColor(226,229,240);pdf.setLineWidth(0.3);pdf.roundedRect(x,cy,w,h,3,3,'S');setTxt('#8894ad');safeText(label,x+4,cy+6,null,'normal',7);setTxt('#0c1220');safeText(String(value),x+4,cy+13,{maxWidth:w-8},'bold',10);if(badge){var bClr=badgeClr==='up'?'#059669':badgeClr==='dn'?'#dc2626':'#0891b2',bBg=badgeClr==='up'?'#f0fdf4':badgeClr==='dn'?'#fef2f2':'#f0f9ff';setFill(bBg);pdf.setFont('helvetica','bold');pdf.setFontSize(6.5);var bW=pdf.getTextWidth(badge)+4;pdf.roundedRect(x+w-bW-3,cy+2,bW,5,1.5,1.5,'F');var bc=hexRgb(bClr);pdf.setTextColor(bc[0],bc[1],bc[2]);safeText(badge,x+w-bW/2-3+bW/2,cy+5.5,{align:'center'},'bold',6.5);}}
 
-      // ── Build KPI values ──────────────────────────────
       var data=filtered();
-      var rev=data.reduce(function(s,d){return s+d.sales;},0);
-      var prof=data.reduce(function(s,d){return s+d.profit;},0);
-      var marg=rev>0?(prof/rev)*100:0;
-      var ords=data.length, custs=new Set(data.map(function(d){return d.customerId;})).size;
+      var rev=data.reduce(function(s,d){return s+d.sales;},0),prof=data.reduce(function(s,d){return s+d.profit;},0);
+      var marg=rev>0?(prof/rev)*100:0,ords=data.length,custs=new Set(data.map(function(d){return d.customerId;})).size;
       var yoy=computeYoY(data);
-      var badgeFor=function(pct){ if(pct===null) return{text:'-',clr:'nt'}; return{text:(pct>=0?'+ ':'-')+Math.abs(pct).toFixed(1)+'%',clr:pct>=0?'up':'dn'}; };
+      var badgeFor=function(pct){if(pct===null)return{text:'-',clr:'nt'};return{text:(pct>=0?'+ ':'-')+Math.abs(pct).toFixed(1)+'%',clr:pct>=0?'up':'dn'};};
 
-      // ── PAGE 1: KPIs ──────────────────────────────────
       sectionTitle('Key Performance Indicators');
-      var kW=(cW-4*3)/5, kH=22;
-      var kpis=[
-        {label:'Total Revenue',    val:fmtPKR(rev),                  badge:yoy?badgeFor(yoy.rev.pct):null},
-        {label:'Total Profit',     val:fmtPKR(prof),                 badge:yoy?badgeFor(yoy.prof.pct):null},
-        {label:'Profit Margin',    val:marg.toFixed(1)+'%',          badge:yoy?badgeFor(yoy.marg.pct):null},
-        {label:'Total Orders',     val:ords.toLocaleString('en-PK'), badge:yoy?badgeFor(yoy.ord.pct):null},
-        {label:'Unique Customers', val:custs.toLocaleString('en-PK'),badge:yoy?badgeFor(yoy.cust.pct):null}
-      ];
-      kpis.forEach(function(k,i){ kpiCard(M+i*(kW+3),y,kW,kH,k.label,k.val,k.badge?k.badge.text:null,k.badge?k.badge.clr:null); });
+      var kW=(cW-4*3)/5,kH=22;
+      var kpis=[{label:'Total Revenue',val:fmtPKR(rev),badge:yoy?badgeFor(yoy.rev.pct):null},{label:'Total Profit',val:fmtPKR(prof),badge:yoy?badgeFor(yoy.prof.pct):null},{label:'Profit Margin',val:marg.toFixed(1)+'%',badge:yoy?badgeFor(yoy.marg.pct):null},{label:'Total Orders',val:ords.toLocaleString(),badge:yoy?badgeFor(yoy.ord.pct):null},{label:'Unique Customers',val:custs.toLocaleString(),badge:yoy?badgeFor(yoy.cust.pct):null}];
+      kpis.forEach(function(k,i){kpiCard(M+i*(kW+3),y,kW,kH,k.label,k.val,k.badge?k.badge.text:null,k.badge?k.badge.clr:null);});
       y+=kH+5;
+      if(yoy){setTxt('#5a6a84');safeText('Year-over-Year: '+yoy.curYear+' vs '+yoy.prevYear+'  |  Revenue '+badgeFor(yoy.rev.pct).text+'  |  Profit '+badgeFor(yoy.prof.pct).text+'  |  Orders '+badgeFor(yoy.ord.pct).text,M,y,null,'italic',7.5);y+=6;}
 
-      if(yoy){
-        setTxt('#64748b');
-        safeText('Year-over-Year: '+yoy.curYear+' vs '+yoy.prevYear+'  |  Revenue '+badgeFor(yoy.rev.pct).text+'  |  Profit '+badgeFor(yoy.prof.pct).text+'  |  Orders '+badgeFor(yoy.ord.pct).text, M, y, null, 'italic', 7.5);
-        y+=6;
-      }
+      function addChart(canvasId,title,cx,cy,w,h){var canvas=document.getElementById(canvasId);if(!canvas)return;setFill('#ffffff');pdf.roundedRect(cx,cy,w,h,3,3,'F');pdf.setDrawColor(226,229,240);pdf.setLineWidth(0.3);pdf.roundedRect(cx,cy,w,h,3,3,'S');setTxt('#0c1220');safeText(title,cx+4,cy+6,null,'bold',8);try{var imgData=canvas.toDataURL('image/png');pdf.addImage(imgData,'PNG',cx+3,cy+8,w-6,h-10,'','FAST');}catch(e){}}
 
-      // ── Chart helper ─────────────────────────────────
-      function addChart(canvasId, title, cx, cy, w, h){
-        var canvas=document.getElementById(canvasId); if(!canvas) return;
-        setFill('#ffffff'); pdf.roundedRect(cx,cy,w,h,3,3,'F');
-        pdf.setDrawColor(229,231,239); pdf.setLineWidth(0.3); pdf.roundedRect(cx,cy,w,h,3,3,'S');
-        setTxt('#0f172a');
-        safeText(title, cx+4, cy+6, null, 'bold', 8);
-        try{
-          var imgData=canvas.toDataURL('image/png');
-          pdf.addImage(imgData,'PNG',cx+3,cy+8,w-6,h-10,'','FAST');
-        }catch(e){}
-      }
-
-      // ── Row 1: Line + Donut ──────────────────────────
       sectionTitle('Sales & Profit Trend  /  Category Share');
-      var row1H=68;
-      addChart('lineChart', 'Sales & Profit Trend (Monthly)', M, y, cW*0.62, row1H);
-      addChart('donutChart','Category Revenue Share', M+cW*0.62+3, y, cW*0.38-3, row1H);
-      y+=row1H+5;
-
-      // ── Row 2: 3 charts ──────────────────────────────
+      var row1H=68;addChart('lineChart','Sales & Profit Trend (Monthly)',M,y,cW*0.62,row1H);addChart('donutChart','Category Revenue Share',M+cW*0.62+3,y,cW*0.38-3,row1H);y+=row1H+5;
       sectionTitle('Regional & Product Breakdown');
-      var row2H=60, r2W=(cW-2*3)/3;
-      addChart('barChart',   'Region Performance', M,         y, r2W, row2H);
-      addChart('bubbleChart','Sales vs Profit',    M+r2W+3,   y, r2W, row2H);
-      addChart('hbarChart',  'Top 8 States',       M+r2W*2+6, y, r2W, row2H);
-      y+=row2H+5;
-
-      // ── Row 3: Stacked + Discount ────────────────────
+      var row2H=60,r2W=(cW-2*3)/3;addChart('barChart','Region Performance',M,y,r2W,row2H);addChart('bubbleChart','Sales vs Profit',M+r2W+3,y,r2W,row2H);addChart('hbarChart','Top 8 States',M+r2W*2+6,y,r2W,row2H);y+=row2H+5;
       sectionTitle('Segment & Discount Analysis');
-      var row3H=60, r3W=(cW-3)/2;
-      addChart('stackedChart', 'Segment Growth',          M,        y, r3W, row3H);
-      addChart('discountChart','Discount vs Profit Impact',M+r3W+3, y, r3W, row3H);
-      y+=row3H+6;
+      var row3H=60,r3W=(cW-3)/2;addChart('stackedChart','Segment Growth',M,y,r3W,row3H);addChart('discountChart','Discount vs Profit Impact',M+r3W+3,y,r3W,row3H);y+=row3H+6;
 
-      // ── PAGE 2: Summary + Insights ───────────────────
-      pdf.addPage(); y=M;
-      setFill('#0ea5e9'); pdf.rect(0,0,pW,14,'F');
-      setTxt('#ffffff');
-      safeText('Sales Insights & Summary', M, 9.5, null, 'bold', 11);
-      safeText(dateStr, pW-M, 9.5, {align:'right'}, 'normal', 8);
-      y=22;
+      pdf.addPage();y=M;
+      setFill('#0891b2');pdf.rect(0,0,pW,14,'F');
+      setTxt('#ffffff');safeText('Sales Insights & Summary',M,9.5,null,'bold',11);safeText(dateStr,pW-M,9.5,{align:'right'},'normal',8);y=22;
 
-      // ── Summary metrics table ────────────────────────
       sectionTitle('Summary Metrics');
-      var rows=[
-        ['Metric','Current Value','vs Previous Year'],
-        ['Total Revenue',    fmtPKR(rev),                  yoy?fmtPKR(yoy.rev.prev)+' -> '+badgeFor(yoy.rev.pct).text:'-'],
-        ['Total Profit',     fmtPKR(prof),                 yoy?fmtPKR(yoy.prof.prev)+' -> '+badgeFor(yoy.prof.pct).text:'-'],
-        ['Profit Margin',    marg.toFixed(2)+'%',          yoy?yoy.marg.prev.toFixed(2)+'% -> '+badgeFor(yoy.marg.pct).text:'-'],
-        ['Total Orders',     ords.toLocaleString('en-PK'), yoy?yoy.ord.prev.toLocaleString('en-PK')+' -> '+badgeFor(yoy.ord.pct).text:'-'],
-        ['Unique Customers', custs.toLocaleString('en-PK'),yoy?yoy.cust.prev.toLocaleString('en-PK')+' -> '+badgeFor(yoy.cust.pct).text:'-'],
-        ['Avg Order Value',  fmtPKR(ords?rev/ords:0,true), '-']
-      ];
-      var colW=[55,70,62], rH=9;
-      rows.forEach(function(row,ri){
-        var isHead=ri===0;
-        if(isHead){setFill('#0ea5e9');}else{setFill(ri%2===0?'#f8f9fc':'#ffffff');}
-        pdf.rect(M,y,cW,rH,'F');
-        if(!isHead){pdf.setDrawColor(229,231,239);pdf.setLineWidth(0.2);pdf.line(M,y+rH,M+cW,y+rH);}
-        setTxt(isHead?'#ffffff':'#334155');
-        var cx2=M+3;
-        row.forEach(function(cell,ci){
-          safeText(String(cell), cx2, y+6, {maxWidth:colW[ci]-4}, isHead?'bold':'normal', 8);
-          cx2+=colW[ci];
-        });
-        y+=rH;
-      });
+      var rows=[['Metric','Current Value','vs Previous Year'],['Total Revenue',fmtPKR(rev),yoy?fmtPKR(yoy.rev.prev)+' → '+badgeFor(yoy.rev.pct).text:'-'],['Total Profit',fmtPKR(prof),yoy?fmtPKR(yoy.prof.prev)+' → '+badgeFor(yoy.prof.pct).text:'-'],['Profit Margin',marg.toFixed(2)+'%',yoy?yoy.marg.prev.toFixed(2)+'% → '+badgeFor(yoy.marg.pct).text:'-'],['Total Orders',ords.toLocaleString(),yoy?yoy.ord.prev.toLocaleString()+' → '+badgeFor(yoy.ord.pct).text:'-'],['Unique Customers',custs.toLocaleString(),yoy?yoy.cust.prev.toLocaleString()+' → '+badgeFor(yoy.cust.pct).text:'-'],['Avg Order Value',fmtPKR(ords?rev/ords:0,true),'-']];
+      var colW=[55,70,62],rH=9;
+      rows.forEach(function(row,ri){var isHead=ri===0;if(isHead){setFill('#0891b2');}else{setFill(ri%2===0?'#f6f7fb':'#ffffff');}pdf.rect(M,y,cW,rH,'F');if(!isHead){pdf.setDrawColor(226,229,240);pdf.setLineWidth(0.2);pdf.line(M,y+rH,M+cW,y+rH);}setTxt(isHead?'#ffffff':'#2d3a52');var cx2=M+3;row.forEach(function(cell,ci){safeText(String(cell),cx2,y+6,{maxWidth:colW[ci]-4},isHead?'bold':'normal',8);cx2+=colW[ci];});y+=rH;});
       y+=10;
 
-      // ── Key Insights Section (FIXED: generateSimpleInsights) ──
       sectionTitle('Key Insights');
-      var simpleInsights = generateSimpleInsights(data);
-
-      simpleInsights.forEach(function(ins, i){
-        if(y > pH-35){ pdf.addPage(); y=M+8; }
-
-        // Card background
-        setFill(i%2===0?'#f8f9fc':'#ffffff');
-        pdf.roundedRect(M, y, cW, 26, 2, 2, 'F');
-        pdf.setDrawColor(229, 231, 239);
-        pdf.setLineWidth(0.3);
-        pdf.roundedRect(M, y, cW, 26, 2, 2, 'S');
-
-        // Accent left bar
-        setFill('#0ea5e9');
-        pdf.roundedRect(M, y, 3, 26, 1, 1, 'F');
-
-        // Title
-        setTxt('#0f172a');
-        safeText(ins.title, M+8, y+8, null, 'bold', 9);
-
-        // Body - wrapped text
-        setTxt('#334155');
-        pdf.setFont('helvetica', 'normal');
-        pdf.setFontSize(8);
-        var lines = pdf.splitTextToSize(ins.body, cW-14);
-        pdf.text(lines, M+8, y+15);
-
-        y += 30;
+      var si=generateSimpleInsights(data);
+      si.forEach(function(ins,i){
+        if(y>pH-35){pdf.addPage();y=M+8;}
+        setFill(i%2===0?'#f6f7fb':'#ffffff');pdf.roundedRect(M,y,cW,26,2,2,'F');pdf.setDrawColor(226,229,240);pdf.setLineWidth(0.3);pdf.roundedRect(M,y,cW,26,2,2,'S');
+        setFill('#0891b2');pdf.roundedRect(M,y,3,26,1,1,'F');
+        setTxt('#0c1220');safeText(ins.title,M+8,y+8,null,'bold',9);
+        setTxt('#2d3a52');pdf.setFont('helvetica','normal');pdf.setFontSize(8);
+        var lines=pdf.splitTextToSize(ins.body,cW-14);pdf.text(lines,M+8,y+15);
+        y+=30;
       });
 
-      // ── Footer on all pages ──────────────────────────
       var totalPages=pdf.internal.getNumberOfPages();
       for(var p=1;p<=totalPages;p++){
-        pdf.setPage(p);
-        setFill('#f4f5f9'); pdf.rect(0,pH-10,pW,10,'F');
-        pdf.setDrawColor(229,231,239); pdf.setLineWidth(0.3); pdf.line(0,pH-10,pW,pH-10);
-        setTxt('#94a3b8');
-        safeText('Confidential - Executive Sales Report - For internal use only', M, pH-4, null, 'normal', 7);
-        safeText('Page '+p+' of '+totalPages, pW-M, pH-4, {align:'right'}, 'normal', 7);
+        pdf.setPage(p);setFill('#f0f2f8');pdf.rect(0,pH-10,pW,10,'F');
+        pdf.setDrawColor(226,229,240);pdf.setLineWidth(0.3);pdf.line(0,pH-10,pW,pH-10);
+        setTxt('#8894ad');
+        safeText('Smart Audit System | Built by Anoushey | Confidential — Executive Sales Report',M,pH-4,null,'normal',7);
+        safeText('Page '+p+' of '+totalPages,pW-M,pH-4,{align:'right'},'normal',7);
       }
 
-      var fname='Sales_Report_'+new Date().toISOString().slice(0,10)+'.pdf';
-      pdf.save(fname);
-      toast('"'+fname+'" downloaded successfully!','ok','');
-
-    } catch(err){
-      console.error('PDF export error:', err);
-      toast('PDF generation failed: '+err.message,'err','');
-    } finally {
-      hideOv();
-      btn.classList.remove('loading');
-      btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span>Download PDF Report</span>';
-    }
-  }, 80);
+      var fname='SmartAudit_Report_'+new Date().toISOString().slice(0,10)+'.pdf';
+      pdf.save(fname);toast('"'+fname+'" downloaded!','ok','✅');
+    }catch(err){console.error('PDF error:',err);toast('PDF generation failed: '+err.message,'err','❌');}
+    finally{hideOv();btn.classList.remove('loading');btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>PDF Report</span>';}
+  },80);
 }
 
-// ── Render all ───────────────────────────────────────────
-function renderAll() {
+/* ═══════════════════════════════════════════
+   RENDER ALL
+   ═══════════════════════════════════════════ */
+function renderAll(){
   var data=filtered();
-  updateKPIs(data); lineChart(data); donutChart(data); barChart(data);
-  bubbleChart(data); hbarChart(data); stackedChart(data); discountChart(data); insights(data);
+  updateKPIs(data);lineChart(data);donutChart(data);barChart(data);bubbleChart(data);hbarChart(data);stackedChart(data);discountChart(data);insights(data);
 }
 
-// ── Show dashboard ────────────────────────────────────────
-function showDash(fileName, yearRange){
+/* ═══════════════════════════════════════════
+   SHOW DASHBOARD
+   ═══════════════════════════════════════════ */
+function showDash(fileName,yearRange){
   document.getElementById('empty-state').style.display='none';
   document.getElementById('fbar').style.display='flex';
   document.getElementById('dash').style.display='block';
   document.getElementById('pdf-btn').style.display='inline-flex';
-  document.getElementById('hd-sub').textContent=yearRange+' - '+fileName;
-  var wrap=document.getElementById('file-badge'), name=fileName.length>22?fileName.slice(0,20)+'...':fileName;
+  document.getElementById('pdf-btn-mobile').style.display='inline-flex';
+  document.getElementById('hd-sub').textContent=yearRange+' — '+fileName;
+  var wrap=document.getElementById('file-badge'),name=fileName.length>24?fileName.slice(0,22)+'…':fileName;
   wrap.innerHTML='<div class="pill pill-teal">'+name+'</div>';
+  var mwrap=document.getElementById('mobile-file-badge');
+  mwrap.innerHTML='<div class="pill pill-teal" style="justify-content:center">'+name+'</div>';
 }
 
-// ── File processor ────────────────────────────────────────
+/* ═══════════════════════════════════════════
+   FILE PROCESSOR — with required column check & NaN guard
+   ═══════════════════════════════════════════ */
 function processFile(file){
-  if(!file) return;
+  if(!file)return;
   var ext=file.name.split('.').pop().toLowerCase();
-  if(!['xlsx','xls','csv'].includes(ext)){toast('Please upload a .xlsx, .xls, or .csv file.','err','');return;}
-  showOv('Parsing your file...');
+  if(!['xlsx','xls','csv'].includes(ext)){toast('Please upload a .xlsx, .xls, or .csv file.','err','❌');return;}
+  showOv('Reading your file…');
   var reader=new FileReader();
   reader.onload=function(e){
     try{
       var wb=XLSX.read(new Uint8Array(e.target.result),{type:'array',cellDates:false});
-      var ws=wb.Sheets[wb.SheetNames[0]], rows=XLSX.utils.sheet_to_json(ws,{defval:''});
-      if(!rows.length){hideOv();toast('File is empty or unreadable.','err','');return;}
-      var parsed=rows.map(norm).filter(function(r){return r.year!==null&&r.sales>0;});
-      if(!parsed.length){hideOv();toast('No valid rows found. Check column names.','err','');return;}
-      rawData.length=0; parsed.forEach(function(r){rawData.push(r);});
+      var ws=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(ws,{defval:''});
+      if(!rows.length){hideOv();toast('File is empty or unreadable.','err','❌');return;}
+
+      // ── REQUIRED COLUMN CHECK ──
+      var check=checkRequiredCols(rows);
+      if(!check.ok){hideOv();toast(check.msg,'err','⚠️');return;}
+
+      // ── PARSE & FILTER — guard against NaN/null ──
+      var parsed=rows.map(function(r){
+        try{return norm(r);}catch(e){return null;}
+      }).filter(function(r){
+        return r!==null&&r.year!==null&&!isNaN(r.year)&&isFinite(r.sales)&&r.sales>0;
+      });
+
+      if(!parsed.length){hideOv();toast('No valid rows found after parsing. Check your data.','err','⚠️');return;}
+
+      rawData.length=0;parsed.forEach(function(r){rawData.push(r);});
       rebuildFilters(rawData);
       var years=[...new Set(rawData.map(function(d){return d.year;}))].sort();
-      var yr=years.length>1?years[0]+'-'+years[years.length-1]:String(years[0]);
-      showDash(file.name, yr);
-      hideOv(); renderAll();
-      toast('Loaded '+parsed.length.toLocaleString('en-PK')+' records from "'+file.name+'"','ok','');
-    }catch(err){hideOv();console.error(err);toast('Failed to parse file.','err','');}
+      var yr=years.length>1?years[0]+' – '+years[years.length-1]:String(years[0]);
+      showDash(file.name,yr);
+      hideOv();renderAll();
+      toast('Loaded '+parsed.length.toLocaleString()+' records from "'+file.name+'"','ok','✅');
+    }catch(err){hideOv();console.error(err);toast('Failed to parse file. '+err.message,'err','❌');}
   };
-  reader.onerror=function(){hideOv();toast('Could not read file.','err','');};
+  reader.onerror=function(){hideOv();toast('Could not read file.','err','❌');};
   reader.readAsArrayBuffer(file);
 }
 
-// ── Events ────────────────────────────────────────────────
+/* ═══════════════════════════════════════════
+   EVENTS
+   ═══════════════════════════════════════════ */
 document.getElementById('file-input').addEventListener('change',function(e){if(e.target.files[0])processFile(e.target.files[0]);e.target.value='';});
 ['f-year','f-region','f-seg','f-cat','f-ship'].forEach(function(id){document.getElementById(id).addEventListener('change',renderAll);});
 document.getElementById('reset-btn').addEventListener('click',function(){['f-year','f-region','f-seg','f-cat','f-ship'].forEach(function(id){document.getElementById(id).value='all';});renderAll();});
 
+// Drag & drop
 var dn=0;
 document.addEventListener('dragenter',function(e){e.preventDefault();dn++;document.body.classList.add('drag');});
 document.addEventListener('dragleave',function(){if(--dn<=0){dn=0;document.body.classList.remove('drag');}});
 document.addEventListener('dragover',function(e){e.preventDefault();});
 document.addEventListener('drop',function(e){e.preventDefault();dn=0;document.body.classList.remove('drag');if(e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);});
+
+// Close mobile nav when clicking outside
+document.addEventListener('click',function(e){
+  var nav=document.getElementById('mobile-nav'),ham=document.getElementById('hamburger');
+  if(nav.classList.contains('open')&&!nav.contains(e.target)&&!ham.contains(e.target)){
+    nav.classList.remove('open');ham.classList.remove('open');
+  }
+});
 </script>
 </body>
 </html>
