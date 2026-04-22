@@ -377,6 +377,146 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
 @media(max-width:380px){
   .kgrid{grid-template-columns:1fr}
 }
+
+/* ══════════════════════════════════════════
+   UPGRADE TO PRO MODAL
+   ══════════════════════════════════════════ */
+.ul-overlay{
+  position:fixed;inset:0;
+  background:rgba(12,18,32,.6);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  z-index:2000;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;
+  transition:opacity .28s cubic-bezier(.4,0,.2,1);
+}
+.ul-overlay.on{opacity:1;pointer-events:all;}
+
+.ul-modal{
+  background:#ffffff;
+  border-radius:24px;
+  padding:0;
+  max-width:460px;width:100%;
+  box-shadow:0 32px 80px rgba(12,18,32,.28),0 8px 24px rgba(12,18,32,.12);
+  transform:translateY(24px) scale(.96);
+  transition:transform .35s cubic-bezier(.34,1.4,.64,1),opacity .28s;
+  opacity:0;
+  position:relative;
+  overflow:hidden;
+}
+.ul-overlay.on .ul-modal{transform:translateY(0) scale(1);opacity:1;}
+
+/* Gradient top banner inside modal */
+.ul-modal-header{
+  background:linear-gradient(135deg,#0c1a2e 0%,#1a2a4a 60%,#0d2340 100%);
+  padding:32px 32px 28px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.ul-modal-header::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(8,145,178,.30) 0%,transparent 70%);
+  pointer-events:none;
+}
+.ul-modal-header::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:24px 24px;pointer-events:none;
+}
+
+.ul-modal-close{
+  position:absolute;top:14px;right:14px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;cursor:pointer;color:rgba(255,255,255,.7);
+  font-size:16px;line-height:1;padding:6px 9px;
+  transition:background .18s,color .18s,border-color .18s;
+  z-index:1;
+}
+.ul-modal-close:hover{background:rgba(255,255,255,.18);color:#fff;border-color:rgba(255,255,255,.3);}
+
+.ul-modal-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(8,145,178,.2);border:1px solid rgba(8,145,178,.35);
+  border-radius:20px;padding:5px 14px;
+  font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:#67e8f9;margin-bottom:16px;position:relative;z-index:1;
+}
+.ul-modal-badge-dot{width:5px;height:5px;border-radius:50%;background:#67e8f9;animation:blink 2s infinite;}
+
+.ul-modal-icon{
+  font-size:42px;margin-bottom:14px;
+  position:relative;z-index:1;
+  display:block;
+  filter:drop-shadow(0 4px 12px rgba(8,145,178,.4));
+}
+
+.ul-modal-title{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:900;
+  letter-spacing:-.5px;
+  color:#ffffff;
+  margin-bottom:0;
+  line-height:1.2;
+  position:relative;z-index:1;
+}
+.ul-modal-title span{
+  background:linear-gradient(90deg,#67e8f9,#a5b4fc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* Modal body */
+.ul-modal-body{padding:28px 32px 30px;}
+
+.ul-modal-msg{
+  font-size:14px;color:var(--muted2);line-height:1.72;
+  margin-bottom:20px;text-align:center;
+}
+.ul-modal-msg strong{color:var(--text);font-weight:700;}
+
+/* Feature highlights */
+.ul-features{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px;
+}
+.ul-feature{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:9px 12px;font-size:12px;font-weight:600;color:var(--text2);
+}
+.ul-feature-ico{font-size:14px;flex-shrink:0;}
+
+/* DM note */
+.ul-dm-note{
+  display:flex;align-items:center;gap:8px;justify-content:center;
+  background:linear-gradient(135deg,rgba(79,70,229,.06),rgba(124,58,237,.04));
+  border:1px solid rgba(79,70,229,.18);
+  border-radius:10px;padding:10px 16px;
+  font-size:12px;font-weight:600;color:var(--indigo);
+  margin-bottom:20px;
+}
+.ul-dm-note svg{flex-shrink:0;}
+
+/* CTA button */
+.ul-modal-btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  background:var(--g1);
+  border:none;border-radius:12px;color:#fff;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;
+  padding:14px 28px;cursor:pointer;width:100%;
+  transition:all .22s;
+  box-shadow:0 6px 24px rgba(8,145,178,.32);
+  letter-spacing:-.1px;text-decoration:none;
+  margin-bottom:14px;
+}
+.ul-modal-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(8,145,178,.45);filter:brightness(1.06);}
+.ul-modal-btn:active{transform:scale(.97);}
+
+.ul-modal-email{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  font-size:11.5px;color:var(--muted);
+}
+.ul-modal-email a{color:var(--teal);font-weight:600;text-decoration:none;}
+.ul-modal-email a:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
@@ -399,12 +539,13 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       <span>PDF Report</span>
     </button>
-    <label class="btn btn-primary" for="file-input">
+    <!-- Upload button: always a <button>, JS handles limit check -->
+    <button class="btn btn-primary" id="upload-btn-header" onclick="handleUploadClick()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       <span>Upload Data</span>
-    </label>
+    </button>
     <input type="file" id="file-input" accept=".xlsx,.xls,.csv">
-    
+
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -414,10 +555,10 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobile-nav">
   <div id="mobile-file-badge"></div>
-  <label class="btn btn-primary" for="file-input" style="justify-content:center">
+  <button class="btn btn-primary" style="justify-content:center" onclick="handleUploadClick()">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
     Upload Data File
-  </label>
+  </button>
   <button class="btn btn-sample" style="justify-content:center" onclick="loadSampleData()">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
     Try with Sample Data
@@ -430,6 +571,68 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
 
 <div class="ov" id="ov"><div class="spin"></div><div class="ov-msg" id="ov-msg">Processing...</div></div>
 <div class="toast" id="toast"><span id="t-ico"></span><span id="t-msg"></span></div>
+<!-- ══ UPGRADE TO PRO MODAL ══ -->
+<!-- ══ UPGRADE TO PRO MODAL ══ -->
+<div class="ul-overlay" id="ul-overlay" role="dialog" aria-modal="true" aria-labelledby="ul-title">
+  <div class="ul-modal">
+    <!-- Header -->
+    <div class="ul-modal-header">
+      <button class="ul-modal-close" id="ul-close" aria-label="Close">&times;</button>
+      <div class="ul-modal-badge">
+        <span class="ul-modal-badge-dot"></span>
+        Pro Plan
+      </div>
+      <span class="ul-modal-icon">🚀</span>
+      <div class="ul-modal-title" id="ul-title">
+        Upgrade to <span>Pro Plan</span> 🚀
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="ul-modal-body">
+      <p class="ul-modal-msg">
+        To unlock <strong>unlimited uploads</strong> and premium AI features, please contact me for the <strong>Pro Plan</strong>.
+      </p>
+
+      <!-- Feature highlights -->
+      <div class="ul-features">
+        <div class="ul-feature"><span class="ul-feature-ico">♾️</span> Unlimited Uploads</div>
+        <div class="ul-feature"><span class="ul-feature-ico">🤖</span> Premium AI Features</div>
+        <div class="ul-feature"><span class="ul-feature-ico">📊</span> Advanced Analytics</div>
+        <div class="ul-feature"><span class="ul-feature-ico">📄</span> Custom PDF Reports</div>
+      </div>
+
+      <!-- DM note -->
+      <div class="ul-dm-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        DM for details — response within 24 hours
+      </div>
+
+      <!-- CTA -->
+<a href="https://mail.google.com/mail/?view=cm&fs=1&to=anousheynasir@gmail.com&su=Smart%20Audit%20Pro%20Plan%20Inquiry&body=Hi%20Anoushey,%0AI%27m%20interested%20in%20the%20Pro%20Plan%20for%20the%20Smart%20Audit%20System.%20Please%20share%20the%20details."
+   target="_blank"
+   rel="noopener noreferrer"
+   class="ul-modal-btn">
+
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+  </svg>
+
+  Contact via Email
+</a>
+
+<div class="ul-modal-email">
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+  </svg>
+
+  <a href="mailto:anousheynasir@gmail.com">anousheynasir@gmail.com</a>
+</div>
+    </div>
+  </div>
+</div>
 
 <main>
   <!-- Hero Section -->
@@ -511,10 +714,11 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
         <div class="estitle">Ready to Analyze</div>
         <div class="esbody">Upload your sales or audit Excel file to instantly generate KPIs, trend charts, and actionable executive insights — or explore with built-in sample data.</div>
         <div class="es-actions">
-          <label class="esbtn" for="file-input">
+          <!-- Empty state upload button also goes through JS handler -->
+          <button class="esbtn" onclick="handleUploadClick()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             Upload File (Excel / CSV)
-          </label>
+          </button>
           <button class="esbtn-sample" onclick="loadSampleData()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             Try Sample Data
@@ -534,7 +738,7 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
         <div id="sample-banner">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" stroke-width="2.2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           <strong>Demo Mode</strong> — You're viewing built-in sample data. Upload your own file to analyze real figures.
-          <label for="file-input" style="margin-left:auto;font-size:11.5px;font-weight:700;color:var(--indigo);cursor:pointer;text-decoration:underline;text-decoration-color:rgba(79,70,229,.4)">Upload now →</label>
+          <button onclick="handleUploadClick()" style="margin-left:auto;font-size:11.5px;font-weight:700;color:var(--indigo);cursor:pointer;text-decoration:underline;text-decoration-color:rgba(79,70,229,.4);background:none;border:none;padding:0;">Upload now →</button>
         </div>
 
         <div id="yoy-banner"></div>
@@ -610,6 +814,46 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
 <script>
 'use strict';
 var rawData=[], charts={}, isSampleData=false;
+
+/* ══════════════════════════════════════════
+   UPLOAD LIMIT LOGIC
+   - Button stays fully clickable at all times
+   - If limit reached → show modal instead of opening file picker
+   ══════════════════════════════════════════ */
+function isUploadLimitReached(){
+  try{return localStorage.getItem('uploadLimitReached')==='true';}catch(e){return false;}
+}
+function setUploadLimitReached(){
+  try{localStorage.setItem('uploadLimitReached','true');}catch(e){}
+}
+
+/* Central handler called by every Upload button/link */
+function handleUploadClick(){
+  if(isUploadLimitReached()){
+    showULModal();
+  }else{
+    document.getElementById('file-input').click();
+  }
+}
+
+/* Modal show / hide */
+function showULModal(){
+  document.getElementById('ul-overlay').classList.add('on');
+}
+function hideULModal(){
+  document.getElementById('ul-overlay').classList.remove('on');
+}
+
+/* Modal close event listeners */
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('ul-close').addEventListener('click',hideULModal);
+  document.getElementById('ul-overlay').addEventListener('click',function(e){
+    if(e.target===this) hideULModal();
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape') hideULModal();
+  });
+});
 
 /* ═══════════════════════════════════════════
    SAMPLE DATA GENERATOR
@@ -1116,12 +1360,6 @@ function exportPDF(){
   btn.innerHTML='<div class="spin" style="width:14px;height:14px;border-width:2px;margin-right:6px"></div><span>Generating...</span>';
   showOv('Building your PDF report...');
   setTimeout(function(){
-    /* ── Pre-capture: force every Chart.js instance to fill its canvas
-       exactly as it appears on screen, preventing clipped or stale renders.
-       resize() snaps the canvas to its container's current pixel dimensions
-       (equivalent to windowWidth = scrollWidth at scale 2 — Chart.js already
-       draws at devicePixelRatio internally). update('none') redraws
-       immediately without animation so toDataURL captures the final frame. ── */
     Object.values(charts).forEach(function(chart){
       if(chart&&typeof chart.resize==='function'){
         chart.resize();
@@ -1175,12 +1413,6 @@ function exportPDF(){
         pdf.setDrawColor(226,229,240);pdf.setLineWidth(0.3);pdf.roundedRect(cx,cy,w,h,3,3,'S');
         setTxt('#0c1220');safeText(title,cx+4,cy+6,null,'bold',8);
         try{
-          /* Capture at the canvas's true backing-store resolution.
-             Chart.js renders at window.devicePixelRatio (typically 2 on HiDPI),
-             so canvas.width / canvas.height are already the high-res pixel dims —
-             the exact equivalent of html2canvas scale:2 + windowWidth:scrollWidth.
-             We derive the draw dimensions from the aspect ratio so charts are
-             never stretched or clipped within their PDF card. */
           var imgData=canvas.toDataURL('image/png',1.0);
           var aspect=canvas.height>0?canvas.width/canvas.height:1;
           var drawW=w-6,drawH=drawW/aspect;
@@ -1245,31 +1477,19 @@ function renderAll(){
 
 /* ═══════════════════════════════════════════
    SHOW DASHBOARD
-   ─────────────────────────────────────────
-   Central entry point called by BOTH
-   loadSampleData() and processFile().
-   Hides hero, how-it-works, and empty state;
-   shows the filter bar; scrolls to top.
    ═══════════════════════════════════════════ */
 function showDash(fileName,yearRange){
-  /* ── hide landing sections ── */
   document.getElementById('hero-section').style.display='none';
   document.getElementById('how-section').style.display='none';
   document.getElementById('empty-state').style.display='none';
-
-  /* ── show dashboard chrome ── */
   document.getElementById('fbar').style.display='flex';
   document.getElementById('dash').style.display='block';
   document.getElementById('pdf-btn').style.display='inline-flex';
   document.getElementById('pdf-btn-mobile').style.display='inline-flex';
-
-  /* ── update header meta ── */
   document.getElementById('hd-sub').textContent=yearRange+' — '+fileName;
   var name=fileName.length>24?fileName.slice(0,22)+'…':fileName;
   document.getElementById('file-badge').innerHTML='<div class="pill pill-teal">'+name+'</div>';
   document.getElementById('mobile-file-badge').innerHTML='<div class="pill pill-teal" style="justify-content:center">'+name+'</div>';
-
-  /* ── scroll to top ── */
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -1300,6 +1520,8 @@ function processFile(file){
       showDash(file.name,yr);
       hideOv();renderAll();
       toast('Loaded '+parsed.length.toLocaleString()+' records from "'+file.name+'"','ok','✅');
+      /* ── Mark upload limit reached after a successful file load ── */
+      setUploadLimitReached();
     }catch(err){hideOv();console.error(err);toast('Failed to parse file. '+err.message,'err','❌');}
   };
   reader.onerror=function(){hideOv();toast('Could not read file.','err','❌');};
@@ -1318,7 +1540,11 @@ var dn=0;
 document.addEventListener('dragenter',function(e){e.preventDefault();dn++;document.body.classList.add('drag');});
 document.addEventListener('dragleave',function(){if(--dn<=0){dn=0;document.body.classList.remove('drag');}});
 document.addEventListener('dragover',function(e){e.preventDefault();});
-document.addEventListener('drop',function(e){e.preventDefault();dn=0;document.body.classList.remove('drag');if(e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);});
+document.addEventListener('drop',function(e){
+  e.preventDefault();dn=0;document.body.classList.remove('drag');
+  if(isUploadLimitReached()){showULModal();return;}
+  if(e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);
+});
 
 /* Close mobile nav on outside click */
 document.addEventListener('click',function(e){
