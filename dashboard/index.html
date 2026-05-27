@@ -379,6 +379,74 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
 }
 
 /* ══════════════════════════════════════════
+   PRINT MEDIA QUERY - PDF LAYOUT FIX
+   ══════════════════════════════════════════ */
+@media print{
+  @page{
+    size:A4;
+    margin:15mm 12mm;
+  }
+
+  /* Prevent page breaks inside chart containers */
+  .cc,.kcard,.icard,.cg1,.cg2,.cg3{
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
+
+  /* Lock chart wrapper heights to prevent overflow */
+  .cw{
+    height:320px!important;
+    width:100%!important;
+    overflow:hidden;
+  }
+
+  /* Specific height locks for different chart types */
+  .cg1 .cw{height:280px!important;}
+  .cg2 .cw{height:240px!important;}
+  .cg3 .cw{height:260px!important;}
+
+  /* Ensure canvas elements maintain aspect ratio */
+  .cw canvas{
+    max-width:100%!important;
+    max-height:100%!important;
+    width:auto!important;
+    height:auto!important;
+  }
+
+  /* Hide interactive elements during print */
+  header,.mobile-nav,.hamburger,.btn,.fbar,#hero-section,#how-section,#empty-state,footer{
+    display:none!important;
+  }
+
+  /* Optimize dashboard for print */
+  #dash{
+    display:block!important;
+  }
+
+  .main-inner{
+    padding:0!important;
+  }
+
+  /* Ensure grids don't break awkwardly */
+  .kgrid,.igrid{
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
+
+  /* Force chart sections to new page if needed */
+  .sec{
+    page-break-after:avoid;
+    break-after:avoid;
+  }
+
+  /* Prevent orphaned chart titles */
+  .cch{
+    page-break-after:avoid;
+    break-after:avoid;
+  }
+}
+
+/* ══════════════════════════════════════════
    UPGRADE TO PRO MODAL
    ══════════════════════════════════════════ */
 .ul-overlay{
@@ -517,6 +585,14 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
 }
 .ul-modal-email a{color:var(--teal);font-weight:600;text-decoration:none;}
 .ul-modal-email a:hover{text-decoration:underline;}
+
+@media print {
+  @page { size: A4; margin: 15mm 12mm; }
+  .card, .chart-card, #discount-chart-container, .igrid, .icard {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -539,8 +615,7 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       <span>PDF Report</span>
     </button>
-    <!-- Upload button: always a <button>, JS handles limit check -->
-    <button class="btn btn-primary" id="upload-btn-header" onclick="handleUploadClick()">
+    <button class="btn btn-primary" id="upload-btn-header" onclick="document.getElementById('file-input').click()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       <span>Upload Data</span>
     </button>
@@ -555,7 +630,7 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobile-nav">
   <div id="mobile-file-badge"></div>
-  <button class="btn btn-primary" style="justify-content:center" onclick="handleUploadClick()">
+  <button class="btn btn-primary" style="justify-content:center" onclick="document.getElementById('file-input').click()">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
     Upload Data File
   </button>
@@ -714,8 +789,7 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
         <div class="estitle">Ready to Analyze</div>
         <div class="esbody">Upload your sales or audit Excel file to instantly generate KPIs, trend charts, and actionable executive insights — or explore with built-in sample data.</div>
         <div class="es-actions">
-          <!-- Empty state upload button also goes through JS handler -->
-          <button class="esbtn" onclick="handleUploadClick()">
+          <button class="esbtn" onclick="document.getElementById('file-input').click()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             Upload File (Excel / CSV)
           </button>
@@ -738,7 +812,7 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
         <div id="sample-banner">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" stroke-width="2.2" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           <strong>Demo Mode</strong> — You're viewing built-in sample data. Upload your own file to analyze real figures.
-          <button onclick="handleUploadClick()" style="margin-left:auto;font-size:11.5px;font-weight:700;color:var(--indigo);cursor:pointer;text-decoration:underline;text-decoration-color:rgba(79,70,229,.4);background:none;border:none;padding:0;">Upload now →</button>
+          <button onclick="document.getElementById('file-input').click()" style="margin-left:auto;font-size:11.5px;font-weight:700;color:var(--indigo);cursor:pointer;text-decoration:underline;text-decoration-color:rgba(79,70,229,.4);background:none;border:none;padding:0;">Upload now →</button>
         </div>
 
         <div id="yoy-banner"></div>
@@ -815,45 +889,6 @@ body.drag::before{content:'Drop your data file here';position:fixed;inset:12px;b
 'use strict';
 var rawData=[], charts={}, isSampleData=false;
 
-/* ══════════════════════════════════════════
-   UPLOAD LIMIT LOGIC
-   - Button stays fully clickable at all times
-   - If limit reached → show modal instead of opening file picker
-   ══════════════════════════════════════════ */
-function isUploadLimitReached(){
-  try{return localStorage.getItem('uploadLimitReached')==='true';}catch(e){return false;}
-}
-function setUploadLimitReached(){
-  try{localStorage.setItem('uploadLimitReached','true');}catch(e){}
-}
-
-/* Central handler called by every Upload button/link */
-function handleUploadClick(){
-  if(isUploadLimitReached()){
-    showULModal();
-  }else{
-    document.getElementById('file-input').click();
-  }
-}
-
-/* Modal show / hide */
-function showULModal(){
-  document.getElementById('ul-overlay').classList.add('on');
-}
-function hideULModal(){
-  document.getElementById('ul-overlay').classList.remove('on');
-}
-
-/* Modal close event listeners */
-document.addEventListener('DOMContentLoaded',function(){
-  document.getElementById('ul-close').addEventListener('click',hideULModal);
-  document.getElementById('ul-overlay').addEventListener('click',function(e){
-    if(e.target===this) hideULModal();
-  });
-  document.addEventListener('keydown',function(e){
-    if(e.key==='Escape') hideULModal();
-  });
-});
 
 /* ═══════════════════════════════════════════
    SAMPLE DATA GENERATOR
@@ -1001,16 +1036,16 @@ function getVal(row,aliases,fallback){
   return(v===null||v===undefined||v==='')?(fallback!==undefined?fallback:''):v;
 }
 
-var SALES_ALIASES  =['sales','revenue','amount','salespkr','salepkr','totalsales','totalrevenue','totalamount','netsales','grosssales'];
-var DATE_ALIASES   =['date','orderdate','transactiondate','period','saledate','invoicedate','reportdate','orderdate'];
-var PROFIT_ALIASES =['profit','earnings','margin','profitpkr','netprofit','grossprofitmargin','earning','netearnings'];
-var DISCOUNT_ALIASES=['discount','discountrate','disc','discountpct','discountpercent'];
-var REGION_ALIASES =['region','location','city','province','area','territory','zone','district','state','country'];
-var SEGMENT_ALIASES=['segment','customersegment','marketsegment','customertier','tier','clientsegment'];
-var CAT_ALIASES    =['category','producttype','servicetype','productcategory','itemcategory','type','productgroup'];
-var SUBCAT_ALIASES =['subcategory','subcat','subcategoryname','productsubcategory'];
-var SHIP_ALIASES   =['shipmode','shippingmode','shipmethod','deliverymode','shippingmethod','dispatchmode'];
-var CUSTID_ALIASES =['customerid','clientid','custid','customernumber','clientcode','buyerid'];
+var SALES_ALIASES  =['sales','revenue','amount','salespkr','salepkr','totalsales','totalrevenue','totalamount','netsales','grosssales','grossamount','revenueamount','saleamount','salesamount','totalrevenueamount'];
+var DATE_ALIASES   =['date','orderdate','transactiondate','period','saledate','invoicedate','reportdate','timestamp','datetime','orderdatetime','transactiondatetime','purchasedate'];
+var PROFIT_ALIASES =['profit','earnings','margin','profitpkr','netprofit','grossprofitmargin','earning','netearnings','totalprofit','profitamount','netprofitamount','grossprofitamount'];
+var DISCOUNT_ALIASES=['discount','discountrate','disc','discountpct','discountpercent','discountpercentage','discountamount'];
+var REGION_ALIASES =['region','location','city','province','area','territory','zone','district','state','country','regionname','cityname','statename','locationname'];
+var SEGMENT_ALIASES=['segment','customersegment','marketsegment','customertier','tier','clientsegment','segmentname','customersegmentname'];
+var CAT_ALIASES    =['category','producttype','servicetype','productcategory','itemcategory','type','productgroup','categoryname','productcategoryname','itemtype','productname'];
+var SUBCAT_ALIASES =['subcategory','subcat','subcategoryname','productsubcategory','itemsubcategory','subtype'];
+var SHIP_ALIASES   =['shipmode','shippingmode','shipmethod','deliverymode','shippingmethod','dispatchmode','deliverymethod','shippingtype'];
+var CUSTID_ALIASES =['customerid','clientid','custid','customernumber','clientcode','buyerid','customercode','clientnumber','customername'];
 
 function checkRequiredCols(rows){
   if(!rows||!rows.length)return{ok:false,msg:'The file appears to be empty.'};
@@ -1021,6 +1056,13 @@ function checkRequiredCols(rows){
   if(!hasSales)return{ok:false,msg:'A Sales or Revenue column was not found.'};
   if(!hasDate)return{ok:false,msg:'A Date column was not found.'};
   return{ok:true};
+}
+
+function sanitizeNumeric(val){
+  if(val===null||val===undefined||val==='')return 0;
+  var str=String(val).trim().toLowerCase();
+  if(str==='nan'||str==='null')return 0;
+  return val;
 }
 
 function norm(row){
@@ -1036,6 +1078,10 @@ function norm(row){
   var shipRaw   =getVal(row,SHIP_ALIASES,'Standard');
   var custIdRaw =getVal(row,CUSTID_ALIASES,'CUST-'+Math.floor(Math.random()*9999));
   var stateRaw  =getVal(row,['state','states','province','region','city','district','area'],'');
+  salesRaw=sanitizeNumeric(salesRaw);
+  profitRaw=sanitizeNumeric(profitRaw);
+  discRaw=sanitizeNumeric(discRaw);
+  qtyRaw=sanitizeNumeric(qtyRaw);
   var sales   =isNaN(parseFloat(salesRaw))?0:parseFloat(salesRaw);
   var profit  =isNaN(parseFloat(profitRaw))?0:parseFloat(profitRaw);
   var discount=isNaN(parseFloat(discRaw))?0:parseFloat(discRaw);
@@ -1098,7 +1144,7 @@ function computeYoY(data){
   if(!curD.length||!prevD.length)return null;
   var agg=function(rows){return{rev:rows.reduce(function(s,d){return s+d.sales;},0),prof:rows.reduce(function(s,d){return s+d.profit;},0),ord:rows.length,cust:new Set(rows.map(function(d){return d.customerId;})).size};};
   var cur=agg(curD),prev=agg(prevD);
-  var pct=function(c,p){return p===0?null:((c-p)/Math.abs(p))*100;};
+  var pct=function(c,p){return p===0?null:((c-p)/p)*100;};
   var cM=cur.rev>0?(cur.prof/cur.rev)*100:0,pM=prev.rev>0?(prev.prof/prev.rev)*100:0;
   return{curYear,prevYear,rev:{cur:cur.rev,prev:prev.rev,pct:pct(cur.rev,prev.rev)},prof:{cur:cur.prof,prev:prev.prof,pct:pct(cur.prof,prev.prof)},marg:{cur:cM,prev:pM,pct:pct(cM,pM)},ord:{cur:cur.ord,prev:prev.ord,pct:pct(cur.ord,prev.ord)},cust:{cur:cur.cust,prev:prev.cust,pct:pct(cur.cust,prev.cust)}};
 }
@@ -1120,27 +1166,86 @@ function countTo(el,target,mode,dec){
    KPI UPDATE
    ═══════════════════════════════════════════ */
 function updateKPIs(data){
-  var rev=data.reduce(function(s,d){return s+d.sales;},0);
-  var prof=data.reduce(function(s,d){return s+d.profit;},0);
+  // Check if "All Years" filter is active
+  var yearFilter=document.getElementById('f-year').value;
+  var isAllYears=(yearFilter==='all');
+
+  if(isAllYears){
+    // "All Years" selected: Calculate COMBINED TOTAL of all years
+    var rev=data.reduce(function(s,d){return s+d.sales;},0);
+    var prof=data.reduce(function(s,d){return s+d.profit;},0);
+    var marg=rev>0?(prof/rev)*100:0;
+    var custs=new Set(data.map(function(d){return d.customerId;})).size;
+
+    countTo(document.getElementById('kv-rev'),rev,'pkr');
+    countTo(document.getElementById('kv-prof'),prof,'pkr');
+    countTo(document.getElementById('kv-marg'),marg,'pct',1);
+    countTo(document.getElementById('kv-ord'),data.length,'num');
+    countTo(document.getElementById('kv-cust'),custs,'num');
+    document.getElementById('kv-prof').style.color=prof>=0?'var(--green)':'var(--red)';
+    document.getElementById('kv-marg').style.color=marg>=0?'var(--green)':'var(--red)';
+
+    // Disable YoY badges for "All Years" - no year-over-year comparison makes sense
+    updateYoY(null);
+    return;
+  }
+
+  // Single year selected: Dynamic Current Year Detection
+  var years=[...new Set(data.map(function(d){return d.year;}))].filter(Boolean).sort(function(a,b){return b-a;});
+  if(!years.length){
+    // No valid year data - show zeros
+    countTo(document.getElementById('kv-rev'),0,'pkr');
+    countTo(document.getElementById('kv-prof'),0,'pkr');
+    countTo(document.getElementById('kv-marg'),0,'pct',1);
+    countTo(document.getElementById('kv-ord'),0,'num');
+    countTo(document.getElementById('kv-cust'),0,'num');
+    updateYoY(null);
+    return;
+  }
+
+  // Current Year = Maximum year in filtered data
+  var currentYear=years[0];
+
+  // Filter data to ONLY Current Year for KPI display
+  var currentYearData=data.filter(function(d){return d.year===currentYear;});
+
+  // Calculate KPIs from Current Year data ONLY
+  var rev=currentYearData.reduce(function(s,d){return s+d.sales;},0);
+  var prof=currentYearData.reduce(function(s,d){return s+d.profit;},0);
   var marg=rev>0?(prof/rev)*100:0;
-  var custs=new Set(data.map(function(d){return d.customerId;})).size;
+  var custs=new Set(currentYearData.map(function(d){return d.customerId;})).size;
+
   countTo(document.getElementById('kv-rev'),rev,'pkr');
   countTo(document.getElementById('kv-prof'),prof,'pkr');
   countTo(document.getElementById('kv-marg'),marg,'pct',1);
-  countTo(document.getElementById('kv-ord'),data.length,'num');
+  countTo(document.getElementById('kv-ord'),currentYearData.length,'num');
   countTo(document.getElementById('kv-cust'),custs,'num');
   document.getElementById('kv-prof').style.color=prof>=0?'var(--green)':'var(--red)';
   document.getElementById('kv-marg').style.color=marg>=0?'var(--green)':'var(--red)';
+
+  // Pass full data to YoY for comparison (it will handle Current Year vs Previous Year internally)
   updateYoY(computeYoY(data));
 }
-function setBadge(id,pct){var el=document.getElementById(id);if(pct===null){el.textContent='-';el.className='kbadge nt';return;}el.textContent=(pct>=0?'↑ ':'↓ ')+Math.abs(pct).toFixed(1)+'%';el.className='kbadge '+(pct>=0?'up':'dn');}
+function setBadge(id,pct){
+  var el=document.getElementById(id);
+  if(pct===null){el.textContent='-';el.className='kbadge nt';return;}
+  // Strict conditional styling: >= 0 shows +X.X% (GREEN), < 0 shows -X.X% (RED)
+  var sign=pct>=0?'+':'-';
+  el.textContent=sign+Math.abs(pct).toFixed(1)+'%';
+  el.className='kbadge '+(pct>=0?'up':'dn');
+}
 function setYoyNote(id,yoyObj,prev,mode){var el=document.getElementById(id);if(!yoyObj||prev===null){el.textContent='';return;}var fmtd=mode==='pkr'?fmtPKR(prev):mode==='pct'?prev.toFixed(1)+'%':Math.round(prev).toLocaleString();el.textContent='vs '+yoyObj.prevYear+': '+fmtd;}
 function updateYoY(yoy){
   var banner=document.getElementById('yoy-banner');
   if(!yoy){['kb-rev','kb-prof','kb-marg','kb-ord','kb-cust'].forEach(function(id){setBadge(id,null);});['ky-rev','ky-prof','ky-marg','ky-ord','ky-cust'].forEach(function(id){document.getElementById(id).textContent='';});banner.style.display='none';return;}
   setBadge('kb-rev',yoy.rev.pct);setBadge('kb-prof',yoy.prof.pct);setBadge('kb-marg',yoy.marg.pct);setBadge('kb-ord',yoy.ord.pct);setBadge('kb-cust',yoy.cust.pct);
   setYoyNote('ky-rev',yoy,yoy.rev.prev,'pkr');setYoyNote('ky-prof',yoy,yoy.prof.prev,'pkr');setYoyNote('ky-marg',yoy,yoy.marg.prev,'pct');setYoyNote('ky-ord',yoy,yoy.ord.prev,'num');setYoyNote('ky-cust',yoy,yoy.cust.prev,'num');
-  var chip=function(v){return v===null?'':'<span class="yoy-chip '+(v>=0?'yoy-up':'yoy-dn')+'">'+(v>=0?'↑':'↓')+Math.abs(v).toFixed(1)+'%</span>';};
+  var chip=function(v){
+    if(v===null)return '';
+    // Strict conditional styling: >= 0 shows +X.X% (GREEN), < 0 shows -X.X% (RED)
+    var sign=v>=0?'+':'-';
+    return '<span class="yoy-chip '+(v>=0?'yoy-up':'yoy-dn')+'">'+sign+Math.abs(v).toFixed(1)+'%</span>';
+  };
   banner.style.display='flex';
   banner.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><strong>Year-over-Year</strong><span style="color:var(--muted)">Showing <strong style="color:var(--text)">'+yoy.curYear+'</strong> vs <strong style="color:var(--text)">'+yoy.prevYear+'</strong></span>&nbsp;·&nbsp; Revenue '+chip(yoy.rev.pct)+'&nbsp; Profit '+chip(yoy.prof.pct)+'&nbsp; Orders '+chip(yoy.ord.pct)+'&nbsp; Margin '+chip(yoy.marg.pct);
 }
@@ -1390,10 +1495,26 @@ function exportPDF(){
       function kpiCard(x,cy,w,h,label,value,badge,badgeClr){setFill('#ffffff');pdf.roundedRect(x,cy,w,h,3,3,'F');pdf.setDrawColor(226,229,240);pdf.setLineWidth(0.3);pdf.roundedRect(x,cy,w,h,3,3,'S');setTxt('#8894ad');safeText(label,x+4,cy+6,null,'normal',7);setTxt('#0c1220');safeText(String(value),x+4,cy+13,{maxWidth:w-8},'bold',10);if(badge){var bClr=badgeClr==='up'?'#059669':badgeClr==='dn'?'#dc2626':'#0891b2',bBg=badgeClr==='up'?'#f0fdf4':badgeClr==='dn'?'#fef2f2':'#f0f9ff';setFill(bBg);pdf.setFont('helvetica','bold');pdf.setFontSize(6.5);var bW=pdf.getTextWidth(badge)+4;pdf.roundedRect(x+w-bW-3,cy+2,bW,5,1.5,1.5,'F');var bc=hexRgb(bClr);pdf.setTextColor(bc[0],bc[1],bc[2]);safeText(badge,x+w-bW/2-3+bW/2,cy+5.5,{align:'center'},'bold',6.5);}}
 
       var data=filtered();
-      var rev=data.reduce(function(s,d){return s+d.sales;},0),prof=data.reduce(function(s,d){return s+d.profit;},0);
-      var marg=rev>0?(prof/rev)*100:0,ords=data.length,custs=new Set(data.map(function(d){return d.customerId;})).size;
+
+      // Dynamic Current Year Detection for PDF: Find maximum year in filtered data
+      var years=[...new Set(data.map(function(d){return d.year;}))].filter(Boolean).sort(function(a,b){return b-a;});
+      var currentYear=years.length?years[0]:null;
+
+      // Filter to ONLY Current Year for KPI calculations in PDF
+      var currentYearData=currentYear?data.filter(function(d){return d.year===currentYear;}):data;
+
+      // Calculate KPIs from Current Year data ONLY
+      var rev=currentYearData.reduce(function(s,d){return s+d.sales;},0),prof=currentYearData.reduce(function(s,d){return s+d.profit;},0);
+      var marg=rev>0?(prof/rev)*100:0,ords=currentYearData.length,custs=new Set(currentYearData.map(function(d){return d.customerId;})).size;
+
+      // YoY comparison uses full data to compare Current Year vs Previous Year
       var yoy=computeYoY(data);
-      var badgeFor=function(pct){if(pct===null)return{text:'-',clr:'nt'};return{text:(pct>=0?'+ ':'-')+Math.abs(pct).toFixed(1)+'%',clr:pct>=0?'up':'dn'};};
+      var badgeFor=function(pct){
+        if(pct===null)return{text:'-',clr:'nt'};
+        // Strict conditional styling: >= 0 shows +X.X% (GREEN), < 0 shows -X.X% (RED)
+        var sign=pct>=0?'+':'-';
+        return{text:sign+Math.abs(pct).toFixed(1)+'%',clr:pct>=0?'up':'dn'};
+      };
 
       var segs=getUniqueSegments(data);
       var cats=getUniqueCategories(data);
@@ -1408,7 +1529,7 @@ function exportPDF(){
       if(yoy){setTxt('#5a6a84');safeText('Year-over-Year: '+yoy.curYear+' vs '+yoy.prevYear+'  |  Revenue '+badgeFor(yoy.rev.pct).text+'  |  Profit '+badgeFor(yoy.prof.pct).text+'  |  Orders '+badgeFor(yoy.ord.pct).text,M,y,null,'italic',7.5);y+=6;}
 
       function addChart(canvasId,title,cx,cy,w,h){
-        var canvas=document.getElementById(canvasId);if(!canvas)return;
+        var canvas=document.getElementById(canvasId);if(!canvas)return cy;
         setFill('#ffffff');pdf.roundedRect(cx,cy,w,h,3,3,'F');
         pdf.setDrawColor(226,229,240);pdf.setLineWidth(0.3);pdf.roundedRect(cx,cy,w,h,3,3,'S');
         setTxt('#0c1220');safeText(title,cx+4,cy+6,null,'bold',8);
@@ -1420,14 +1541,26 @@ function exportPDF(){
           var offX=cx+3+(w-6-drawW)/2;
           pdf.addImage(imgData,'PNG',offX,cy+8,drawW,drawH,'','FAST');
         }catch(e){}
+        return cy+h;
       }
 
+      if(y+78>pH-15){pdf.addPage();y=M;}
       sectionTitle('Sales & Profit Trend  /  Category Share');
-      var row1H=68;addChart('lineChart','Sales & Profit Trend (Monthly)',M,y,cW*0.62,row1H);addChart('donutChart','Category Revenue Share ('+cats.length+' categories)',M+cW*0.62+3,y,cW*0.38-3,row1H);y+=row1H+5;
+      var row1H=68;
+      if(y+row1H>pH-15){pdf.addPage();y=M;sectionTitle('Sales & Profit Trend  /  Category Share');}
+      addChart('lineChart','Sales & Profit Trend (Monthly)',M,y,cW*0.62,row1H);addChart('donutChart','Category Revenue Share ('+cats.length+' categories)',M+cW*0.62+3,y,cW*0.38-3,row1H);y+=row1H+5;
+
+      if(y+70>pH-15){pdf.addPage();y=M;}
       sectionTitle('Regional & Product Breakdown');
-      var row2H=60,r2W=(cW-2*3)/3;addChart('barChart','Region Performance',M,y,r2W,row2H);addChart('bubbleChart','Sales vs Profit by Category',M+r2W+3,y,r2W,row2H);addChart('hbarChart','Top 8 States / Cities',M+r2W*2+6,y,r2W,row2H);y+=row2H+5;
+      var row2H=60,r2W=(cW-2*3)/3;
+      if(y+row2H>pH-15){pdf.addPage();y=M;sectionTitle('Regional & Product Breakdown');}
+      addChart('barChart','Region Performance',M,y,r2W,row2H);addChart('bubbleChart','Sales vs Profit by Category',M+r2W+3,y,r2W,row2H);addChart('hbarChart','Top 8 States / Cities',M+r2W*2+6,y,r2W,row2H);y+=row2H+5;
+
+      if(y+70>pH-15){pdf.addPage();y=M;}
       sectionTitle('Segment & Discount Analysis');
-      var row3H=60,r3W=(cW-3)/2;addChart('stackedChart','Segment Growth ('+segs.length+' segments)',M,y,r3W,row3H);addChart('discountChart','Discount vs Profit Impact',M+r3W+3,y,r3W,row3H);y+=row3H+6;
+      var row3H=60,r3W=(cW-3)/2;
+      if(y+row3H>pH-15){pdf.addPage();y=M;sectionTitle('Segment & Discount Analysis');}
+      addChart('stackedChart','Segment Growth ('+segs.length+' segments)',M,y,r3W,row3H);addChart('discountChart','Discount vs Profit Impact',M+r3W+3,y,r3W,row3H);y+=row3H+6;
 
       pdf.addPage();y=M;
       setFill('#0c1a2e');pdf.rect(0,0,pW,14,'F');
@@ -1520,8 +1653,6 @@ function processFile(file){
       showDash(file.name,yr);
       hideOv();renderAll();
       toast('Loaded '+parsed.length.toLocaleString()+' records from "'+file.name+'"','ok','✅');
-      /* ── Mark upload limit reached after a successful file load ── */
-      setUploadLimitReached();
     }catch(err){hideOv();console.error(err);toast('Failed to parse file. '+err.message,'err','❌');}
   };
   reader.onerror=function(){hideOv();toast('Could not read file.','err','❌');};
@@ -1542,7 +1673,6 @@ document.addEventListener('dragleave',function(){if(--dn<=0){dn=0;document.body.
 document.addEventListener('dragover',function(e){e.preventDefault();});
 document.addEventListener('drop',function(e){
   e.preventDefault();dn=0;document.body.classList.remove('drag');
-  if(isUploadLimitReached()){showULModal();return;}
   if(e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);
 });
 
